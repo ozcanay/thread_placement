@@ -1,0 +1,1 @@
+/usr/local/bin/c++  -g   CMakeFiles/placer.dir/main.cpp.o CMakeFiles/placer.dir/thread_helper.cpp.o CMakeFiles/placer.dir/intel_helper.cpp.o CMakeFiles/placer.dir/logger_helper.cpp.o CMakeFiles/placer.dir/cpu_helper.cpp.o  -o placer -lpthread /usr/local/lib64/libspdlog.a -lpthread 
