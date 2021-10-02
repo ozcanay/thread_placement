@@ -1,22 +1,20 @@
 Determining if the pthread_create exist failed with the following output:
 Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_04c64/fast"
+Run Build Command:"/usr/bin/gmake" "cmTC_f320f/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_f320f.dir/build.make CMakeFiles/cmTC_f320f.dir/build
 gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-/usr/bin/gmake -f CMakeFiles/cmTC_04c64.dir/build.make CMakeFiles/cmTC_04c64.dir/build
-gmake[2]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_04c64.dir/CheckSymbolExists.cxx.o
-/usr/local/bin/c++    -std=gnu++17 -o CMakeFiles/cmTC_04c64.dir/CheckSymbolExists.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
-Linking CXX executable cmTC_04c64
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_04c64.dir/link.txt --verbose=1
-/usr/local/bin/c++       CMakeFiles/cmTC_04c64.dir/CheckSymbolExists.cxx.o  -o cmTC_04c64 
-CMakeFiles/cmTC_04c64.dir/CheckSymbolExists.cxx.o: In function `main':
+Building CXX object CMakeFiles/cmTC_f320f.dir/CheckSymbolExists.cxx.o
+/usr/local/bin/c++    -std=gnu++17 -o CMakeFiles/cmTC_f320f.dir/CheckSymbolExists.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+Linking CXX executable cmTC_f320f
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f320f.dir/link.txt --verbose=1
+/usr/local/bin/c++       CMakeFiles/cmTC_f320f.dir/CheckSymbolExists.cxx.o  -o cmTC_f320f 
+CMakeFiles/cmTC_f320f.dir/CheckSymbolExists.cxx.o: In function `main':
 CheckSymbolExists.cxx:(.text+0x16): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-gmake[2]: *** [cmTC_04c64] Error 1
-gmake[2]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-gmake[1]: *** [cmTC_04c64/fast] Error 2
+gmake[1]: *** [cmTC_f320f] Error 1
 gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
+gmake: *** [cmTC_f320f/fast] Error 2
 
 File /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
 /* */
@@ -36,20 +34,18 @@ int main(int argc, char** argv)
 Determining if the function pthread_create exists in the pthreads failed with the following output:
 Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_b10d7/fast"
+Run Build Command:"/usr/bin/gmake" "cmTC_c6185/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_c6185.dir/build.make CMakeFiles/cmTC_c6185.dir/build
 gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-/usr/bin/gmake -f CMakeFiles/cmTC_b10d7.dir/build.make CMakeFiles/cmTC_b10d7.dir/build
-gmake[2]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_b10d7.dir/CheckFunctionExists.cxx.o
-/usr/local/bin/c++    -DCHECK_FUNCTION_EXISTS=pthread_create   -std=gnu++17 -o CMakeFiles/cmTC_b10d7.dir/CheckFunctionExists.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
-Linking CXX executable cmTC_b10d7
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b10d7.dir/link.txt --verbose=1
-/usr/local/bin/c++   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_b10d7.dir/CheckFunctionExists.cxx.o  -o cmTC_b10d7 -lpthreads 
+Building CXX object CMakeFiles/cmTC_c6185.dir/CheckFunctionExists.cxx.o
+/usr/local/bin/c++    -DCHECK_FUNCTION_EXISTS=pthread_create   -std=gnu++17 -o CMakeFiles/cmTC_c6185.dir/CheckFunctionExists.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_c6185
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c6185.dir/link.txt --verbose=1
+/usr/local/bin/c++   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_c6185.dir/CheckFunctionExists.cxx.o  -o cmTC_c6185 -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-gmake[2]: *** [cmTC_b10d7] Error 1
-gmake[2]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-gmake[1]: *** [cmTC_b10d7/fast] Error 2
+gmake[1]: *** [cmTC_c6185] Error 1
 gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
+gmake: *** [cmTC_c6185/fast] Error 2
 
 

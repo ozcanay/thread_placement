@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/placer.dir/intel_helper.cpp.o"
   "CMakeFiles/placer.dir/logger_helper.cpp.o"
   "CMakeFiles/placer.dir/cpu_helper.cpp.o"
+  "CMakeFiles/placer.dir/string_helper.cpp.o"
   "placer.pdb"
   "placer"
 )

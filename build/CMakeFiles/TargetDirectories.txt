@@ -1,3 +1,7 @@
-/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/rebuild_cache.dir
-/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/placer.dir
+/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/install/strip.dir
+/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/install/local.dir
 /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/edit_cache.dir
+/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/placer.dir
+/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/rebuild_cache.dir
+/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/list_install_components.dir
+/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/install.dir

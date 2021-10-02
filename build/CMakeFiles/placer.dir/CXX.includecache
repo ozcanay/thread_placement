@@ -7,6 +7,10 @@
 #IncludeRegexTransform: 
 
 /home/thft/aydin_workspace/thread_placement/constants.h
+string
+-
+unordered_map
+-
 
 /home/thft/aydin_workspace/thread_placement/cpu_helper.h
 vector
@@ -41,9 +45,15 @@ algorithm
 -
 unistd.h
 -
+chrono
+-
 iostream
 -
-chrono
+thread
+-
+mutex
+-
+random
 -
 
 /home/thft/aydin_workspace/thread_placement/thread_helper.h

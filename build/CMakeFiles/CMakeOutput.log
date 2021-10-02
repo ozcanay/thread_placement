@@ -15,28 +15,28 @@ The CXX compiler identification is GNU, found in "/home/thft/aydin_workspace/thr
 Determining if the CXX compiler works passed with the following output:
 Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_d2522/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_d2522.dir/build.make CMakeFiles/cmTC_d2522.dir/build
+Run Build Command:"/usr/bin/gmake" "cmTC_eb9ff/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_eb9ff.dir/build.make CMakeFiles/cmTC_eb9ff.dir/build
 gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_d2522.dir/testCXXCompiler.cxx.o
-/usr/local/bin/c++     -o CMakeFiles/cmTC_d2522.dir/testCXXCompiler.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTC_d2522
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d2522.dir/link.txt --verbose=1
-/usr/local/bin/c++       CMakeFiles/cmTC_d2522.dir/testCXXCompiler.cxx.o  -o cmTC_d2522 
+Building CXX object CMakeFiles/cmTC_eb9ff.dir/testCXXCompiler.cxx.o
+/usr/local/bin/c++     -o CMakeFiles/cmTC_eb9ff.dir/testCXXCompiler.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_eb9ff
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eb9ff.dir/link.txt --verbose=1
+/usr/local/bin/c++       CMakeFiles/cmTC_eb9ff.dir/testCXXCompiler.cxx.o  -o cmTC_eb9ff 
 gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_8e33a/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_8e33a.dir/build.make CMakeFiles/cmTC_8e33a.dir/build
+Run Build Command:"/usr/bin/gmake" "cmTC_a109d/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_a109d.dir/build.make CMakeFiles/cmTC_a109d.dir/build
 gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_8e33a.dir/CMakeCXXCompilerABI.cpp.o
-/usr/local/bin/c++     -o CMakeFiles/cmTC_8e33a.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.12/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTC_8e33a
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8e33a.dir/link.txt --verbose=1
-/usr/local/bin/c++      -v CMakeFiles/cmTC_8e33a.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_8e33a 
+Building CXX object CMakeFiles/cmTC_a109d.dir/CMakeCXXCompilerABI.cpp.o
+/usr/local/bin/c++     -o CMakeFiles/cmTC_a109d.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.12/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_a109d
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a109d.dir/link.txt --verbose=1
+/usr/local/bin/c++      -v CMakeFiles/cmTC_a109d.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_a109d 
 Using built-in specs.
 COLLECT_GCC=/usr/local/bin/c++
 COLLECT_LTO_WRAPPER=/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/lto-wrapper
@@ -46,9 +46,9 @@ Thread model: posix
 gcc version 9.1.0 (GCC) 
 COMPILER_PATH=/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/:/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/:/usr/local/libexec/gcc/x86_64-pc-linux-gnu/:/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/:/usr/local/lib/gcc/x86_64-pc-linux-gnu/
 LIBRARY_PATH=/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/:/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8e33a' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/collect2 -plugin /usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/liblto_plugin.so -plugin-opt=/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccZGUNiz.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_8e33a /lib/../lib64/crt1.o /lib/../lib64/crti.o /usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/crtbegin.o -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0 -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../.. CMakeFiles/cmTC_8e33a.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/crtend.o /lib/../lib64/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8e33a' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a109d' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/collect2 -plugin /usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/liblto_plugin.so -plugin-opt=/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccE3rdRq.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_a109d /lib/../lib64/crt1.o /lib/../lib64/crti.o /usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/crtbegin.o -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0 -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../.. CMakeFiles/cmTC_a109d.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/crtend.o /lib/../lib64/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a109d' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
 gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
 
 
@@ -56,14 +56,14 @@ Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/gmake" "cmTC_8e33a/fast"]
-  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTC_8e33a.dir/build.make CMakeFiles/cmTC_8e33a.dir/build]
+  ignore line: [Run Build Command:"/usr/bin/gmake" "cmTC_a109d/fast"]
+  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTC_a109d.dir/build.make CMakeFiles/cmTC_a109d.dir/build]
   ignore line: [gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_8e33a.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/local/bin/c++     -o CMakeFiles/cmTC_8e33a.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.12/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTC_8e33a]
-  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8e33a.dir/link.txt --verbose=1]
-  ignore line: [/usr/local/bin/c++      -v CMakeFiles/cmTC_8e33a.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_8e33a ]
+  ignore line: [Building CXX object CMakeFiles/cmTC_a109d.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/local/bin/c++     -o CMakeFiles/cmTC_a109d.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.12/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTC_a109d]
+  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a109d.dir/link.txt --verbose=1]
+  ignore line: [/usr/local/bin/c++      -v CMakeFiles/cmTC_a109d.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_a109d ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/local/bin/c++]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/lto-wrapper]
@@ -73,13 +73,13 @@ Parsed CXX implicit link information from above output:
   ignore line: [gcc version 9.1.0 (GCC) ]
   ignore line: [COMPILER_PATH=/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/:/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/:/usr/local/libexec/gcc/x86_64-pc-linux-gnu/:/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/:/usr/local/lib/gcc/x86_64-pc-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/:/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8e33a' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/collect2 -plugin /usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/liblto_plugin.so -plugin-opt=/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccZGUNiz.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_8e33a /lib/../lib64/crt1.o /lib/../lib64/crti.o /usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/crtbegin.o -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0 -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../.. CMakeFiles/cmTC_8e33a.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/crtend.o /lib/../lib64/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a109d' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/collect2 -plugin /usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/liblto_plugin.so -plugin-opt=/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccE3rdRq.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_a109d /lib/../lib64/crt1.o /lib/../lib64/crti.o /usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/crtbegin.o -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0 -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../.. CMakeFiles/cmTC_a109d.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/crtend.o /lib/../lib64/crtn.o]
     arg [/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/local/libexec/gcc/x86_64-pc-linux-gnu/9.1.0/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccZGUNiz.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccE3rdRq.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -91,7 +91,7 @@ Parsed CXX implicit link information from above output:
     arg [-dynamic-linker] ==> ignore
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_8e33a] ==> ignore
+    arg [cmTC_a109d] ==> ignore
     arg [/lib/../lib64/crt1.o] ==> ignore
     arg [/lib/../lib64/crti.o] ==> ignore
     arg [/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/crtbegin.o] ==> ignore
@@ -100,7 +100,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
     arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
     arg [-L/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../..] ==> dir [/usr/local/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../..]
-    arg [CMakeFiles/cmTC_8e33a.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_a109d.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -125,14 +125,14 @@ Parsed CXX implicit link information from above output:
 Detecting CXX [-std=c++2a] compiler features compiled with the following output:
 Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_37ad8/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_37ad8.dir/build.make CMakeFiles/cmTC_37ad8.dir/build
+Run Build Command:"/usr/bin/gmake" "cmTC_0c324/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_0c324.dir/build.make CMakeFiles/cmTC_0c324.dir/build
 gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_37ad8.dir/feature_tests.cxx.o
-/usr/local/bin/c++    -std=c++2a -o CMakeFiles/cmTC_37ad8.dir/feature_tests.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_37ad8
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_37ad8.dir/link.txt --verbose=1
-/usr/local/bin/c++       CMakeFiles/cmTC_37ad8.dir/feature_tests.cxx.o  -o cmTC_37ad8 
+Building CXX object CMakeFiles/cmTC_0c324.dir/feature_tests.cxx.o
+/usr/local/bin/c++    -std=c++2a -o CMakeFiles/cmTC_0c324.dir/feature_tests.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_0c324
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0c324.dir/link.txt --verbose=1
+/usr/local/bin/c++       CMakeFiles/cmTC_0c324.dir/feature_tests.cxx.o  -o cmTC_0c324 
 gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
 
 
@@ -198,14 +198,14 @@ gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/C
 Detecting CXX [-std=c++17] compiler features compiled with the following output:
 Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_55838/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_55838.dir/build.make CMakeFiles/cmTC_55838.dir/build
+Run Build Command:"/usr/bin/gmake" "cmTC_9e325/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_9e325.dir/build.make CMakeFiles/cmTC_9e325.dir/build
 gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_55838.dir/feature_tests.cxx.o
-/usr/local/bin/c++    -std=c++17 -o CMakeFiles/cmTC_55838.dir/feature_tests.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_55838
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_55838.dir/link.txt --verbose=1
-/usr/local/bin/c++       CMakeFiles/cmTC_55838.dir/feature_tests.cxx.o  -o cmTC_55838 
+Building CXX object CMakeFiles/cmTC_9e325.dir/feature_tests.cxx.o
+/usr/local/bin/c++    -std=c++17 -o CMakeFiles/cmTC_9e325.dir/feature_tests.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_9e325
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9e325.dir/link.txt --verbose=1
+/usr/local/bin/c++       CMakeFiles/cmTC_9e325.dir/feature_tests.cxx.o  -o cmTC_9e325 
 gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
 
 
@@ -271,14 +271,14 @@ gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/C
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
 Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_0d10a/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_0d10a.dir/build.make CMakeFiles/cmTC_0d10a.dir/build
+Run Build Command:"/usr/bin/gmake" "cmTC_3c5c6/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_3c5c6.dir/build.make CMakeFiles/cmTC_3c5c6.dir/build
 gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_0d10a.dir/feature_tests.cxx.o
-/usr/local/bin/c++    -std=c++14 -o CMakeFiles/cmTC_0d10a.dir/feature_tests.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_0d10a
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0d10a.dir/link.txt --verbose=1
-/usr/local/bin/c++       CMakeFiles/cmTC_0d10a.dir/feature_tests.cxx.o  -o cmTC_0d10a 
+Building CXX object CMakeFiles/cmTC_3c5c6.dir/feature_tests.cxx.o
+/usr/local/bin/c++    -std=c++14 -o CMakeFiles/cmTC_3c5c6.dir/feature_tests.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_3c5c6
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3c5c6.dir/link.txt --verbose=1
+/usr/local/bin/c++       CMakeFiles/cmTC_3c5c6.dir/feature_tests.cxx.o  -o cmTC_3c5c6 
 gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
 
 
@@ -344,14 +344,14 @@ gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/C
 Detecting CXX [-std=c++11] compiler features compiled with the following output:
 Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_0f13b/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_0f13b.dir/build.make CMakeFiles/cmTC_0f13b.dir/build
+Run Build Command:"/usr/bin/gmake" "cmTC_dd317/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_dd317.dir/build.make CMakeFiles/cmTC_dd317.dir/build
 gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_0f13b.dir/feature_tests.cxx.o
-/usr/local/bin/c++    -std=c++11 -o CMakeFiles/cmTC_0f13b.dir/feature_tests.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_0f13b
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0f13b.dir/link.txt --verbose=1
-/usr/local/bin/c++       CMakeFiles/cmTC_0f13b.dir/feature_tests.cxx.o  -o cmTC_0f13b 
+Building CXX object CMakeFiles/cmTC_dd317.dir/feature_tests.cxx.o
+/usr/local/bin/c++    -std=c++11 -o CMakeFiles/cmTC_dd317.dir/feature_tests.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_dd317
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dd317.dir/link.txt --verbose=1
+/usr/local/bin/c++       CMakeFiles/cmTC_dd317.dir/feature_tests.cxx.o  -o cmTC_dd317 
 gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
 
 
@@ -417,14 +417,14 @@ gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/C
 Detecting CXX [-std=c++98] compiler features compiled with the following output:
 Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_fc8ba/fast"
-/usr/bin/gmake -f CMakeFiles/cmTC_fc8ba.dir/build.make CMakeFiles/cmTC_fc8ba.dir/build
+Run Build Command:"/usr/bin/gmake" "cmTC_3c703/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_3c703.dir/build.make CMakeFiles/cmTC_3c703.dir/build
 gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_fc8ba.dir/feature_tests.cxx.o
-/usr/local/bin/c++    -std=c++98 -o CMakeFiles/cmTC_fc8ba.dir/feature_tests.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_fc8ba
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fc8ba.dir/link.txt --verbose=1
-/usr/local/bin/c++       CMakeFiles/cmTC_fc8ba.dir/feature_tests.cxx.o  -o cmTC_fc8ba 
+Building CXX object CMakeFiles/cmTC_3c703.dir/feature_tests.cxx.o
+/usr/local/bin/c++    -std=c++98 -o CMakeFiles/cmTC_3c703.dir/feature_tests.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_3c703
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3c703.dir/link.txt --verbose=1
+/usr/local/bin/c++       CMakeFiles/cmTC_3c703.dir/feature_tests.cxx.o  -o cmTC_3c703 
 gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
 
 
@@ -488,32 +488,28 @@ gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/C
 Determining if the include file pthread.h exists passed with the following output:
 Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_460ee/fast"
+Run Build Command:"/usr/bin/gmake" "cmTC_eb202/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_eb202.dir/build.make CMakeFiles/cmTC_eb202.dir/build
 gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-/usr/bin/gmake -f CMakeFiles/cmTC_460ee.dir/build.make CMakeFiles/cmTC_460ee.dir/build
-gmake[2]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_460ee.dir/CheckIncludeFile.cxx.o
-/usr/local/bin/c++    -std=gnu++17 -o CMakeFiles/cmTC_460ee.dir/CheckIncludeFile.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp/CheckIncludeFile.cxx
-Linking CXX executable cmTC_460ee
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_460ee.dir/link.txt --verbose=1
-/usr/local/bin/c++       CMakeFiles/cmTC_460ee.dir/CheckIncludeFile.cxx.o  -o cmTC_460ee 
-gmake[2]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_eb202.dir/CheckIncludeFile.cxx.o
+/usr/local/bin/c++    -std=gnu++17 -o CMakeFiles/cmTC_eb202.dir/CheckIncludeFile.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp/CheckIncludeFile.cxx
+Linking CXX executable cmTC_eb202
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eb202.dir/link.txt --verbose=1
+/usr/local/bin/c++       CMakeFiles/cmTC_eb202.dir/CheckIncludeFile.cxx.o  -o cmTC_eb202 
 gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
 
 
 Determining if the function pthread_create exists in the pthread passed with the following output:
 Change Dir: /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/gmake" "cmTC_5b0ef/fast"
+Run Build Command:"/usr/bin/gmake" "cmTC_d8b50/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_d8b50.dir/build.make CMakeFiles/cmTC_d8b50.dir/build
 gmake[1]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-/usr/bin/gmake -f CMakeFiles/cmTC_5b0ef.dir/build.make CMakeFiles/cmTC_5b0ef.dir/build
-gmake[2]: Entering directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_5b0ef.dir/CheckFunctionExists.cxx.o
-/usr/local/bin/c++    -DCHECK_FUNCTION_EXISTS=pthread_create   -std=gnu++17 -o CMakeFiles/cmTC_5b0ef.dir/CheckFunctionExists.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
-Linking CXX executable cmTC_5b0ef
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5b0ef.dir/link.txt --verbose=1
-/usr/local/bin/c++   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_5b0ef.dir/CheckFunctionExists.cxx.o  -o cmTC_5b0ef -lpthread 
-gmake[2]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_d8b50.dir/CheckFunctionExists.cxx.o
+/usr/local/bin/c++    -DCHECK_FUNCTION_EXISTS=pthread_create   -std=gnu++17 -o CMakeFiles/cmTC_d8b50.dir/CheckFunctionExists.cxx.o -c /home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_d8b50
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d8b50.dir/link.txt --verbose=1
+/usr/local/bin/c++   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_d8b50.dir/CheckFunctionExists.cxx.o  -o cmTC_d8b50 -lpthread 
 gmake[1]: Leaving directory `/home/thft/aydin_workspace/thread_placement/build/CMakeFiles/CMakeTmp'
 
 

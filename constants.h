@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
+
 /// general
 static constexpr int CACHE_LINE_SIZE  = 64;
 static constexpr int NUM_SOCKETS      = 1;
@@ -48,12 +51,44 @@ static constexpr unsigned int DIR_LOOKUP_SNP = 0x00400153; /// umask is SNP
 static constexpr unsigned int DIR_LOOKUP_NOSNP = 0x00400253; /// umask is NO_SNP
 
 static constexpr unsigned int XSNP_RESP_EVICT_RSP_HITFSE = 0x00408132;
+static constexpr unsigned int SF_EVICTION_S_STATE        = 0x0040043d;
 static constexpr unsigned int SF_EVICTION_M_STATE        = 0x0040013d;
 static constexpr unsigned int SF_EVICTION_E_STATE        = 0x0040023d;
-static constexpr unsigned int SF_EVICTION_S_STATE        = 0x0040043d;
 
 /// filter
 static constexpr unsigned int FILTER0_OFF = 0;
 static constexpr unsigned int FILTER0_ALL_LLC = (1 << 24) | (1 << 23) | (1 << 22) | (1 << 21) | (1 << 17); /// for filtering only and all LLC events (FMESI).
+static constexpr unsigned int FILTER0_ALL_SF = (1 << 20) | (1 << 19) | (1 << 18); /// for filtering only and all SF_EVICTIONs.
+static constexpr unsigned int FILTER0_ALL_COMBINED_LLC_SF = FILTER0_ALL_LLC | FILTER0_ALL_SF; /// for filtering only and all SF_EVICTIONs.
 // static constexpr unsigned int FILTER0_ALL_SF = 0x0000003B; /// for filtering only LLC events.
 static constexpr unsigned int FILTER1_OFF = 0x0000003B; /// 3B essentially turns off this filter.
+
+
+static std::unordered_map<unsigned int, std::string> descriptions {
+    {LEFT_READ, "LEFT_READ"},
+    {RIGHT_READ, "RIGHT_READ"},
+    {UP_READ, "UP_READ"},
+    {DOWN_READ, "DOWN_READ"},
+
+    {LLC_ANY_LOOKUP, "LLC_ANY_LOOKUP"},
+    {LLC_LOCAL_LOOKUP, "LLC_LOCAL_LOOKUP"},
+    {LLC_REMOTE_LOOKUP, "LLC_REMOTE_LOOKUP"},
+    {LLC_REMOTE_SNOOP_LOOKUP, "LLC_REMOTE_SNOOP_LOOKUP"},
+    {LLC_DATA_READ_LOOKUP, "LLC_DATA_READ_LOOKUP"},
+    {LLC_WRITE_LOOKUP, "LLC_WRITE_LOOKUP"},
+    
+    {DIR_LOOKUP_SNP_NOSNP, "DIR_LOOKUP_SNP_NOSNP"},
+    {DIR_LOOKUP_SNP, "DIR_LOOKUP_SNP"},
+    {DIR_LOOKUP_NOSNP, "DIR_LOOKUP_NOSNP"},
+
+    {XSNP_RESP_EVICT_RSP_HITFSE, "XSNP_RESP_EVICT_RSP_HITFSE"},
+    {SF_EVICTION_S_STATE, "SF_EVICTION_S_STATE"},
+    {SF_EVICTION_M_STATE, "SF_EVICTION_M_STATE"},
+    {SF_EVICTION_E_STATE, "SF_EVICTION_E_STATE"},
+
+    {FILTER0_OFF, "FILTER0_OFF"},
+    {FILTER0_ALL_LLC, "FILTER0_ALL_LLC"},
+    {FILTER0_ALL_SF, "FILTER0_ALL_SF"},
+    {FILTER0_ALL_COMBINED_LLC_SF, "FILTER0_ALL_COMBINED_LLC_SF"},
+    {FILTER1_OFF, "FILTER1_OFF"},
+};

@@ -11,6 +11,7 @@ thread_helper.cpp
 intel_helper.cpp
 logger_helper.cpp
 cpu_helper.cpp
+string_helper.cpp
 )
 
 #target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -pedantic -Werror)
@@ -19,3 +20,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     pthread
     spdlog::spdlog
 )
+
+install(FILES
+    thft_core_topo.txt
+    thft_cha_topo.txt
+    DESTINATION
+    ${CMAKE_SOURCE_DIR}/build)
