@@ -65,6 +65,13 @@ void setAllUncoreRegisters(const std::vector<unsigned int>& vals)
         for(int cha = 0; cha < NUM_CHA_BOXES; ++cha) {
             long core = processor_in_socket[socket];
 
+            auto msr_num = 0xe00 + 0x10 * cha;		// box control register -- set enable bit
+			auto msr_val = 0x00400000;
+			pwrite(fds[0], &msr_val, sizeof(msr_val), msr_num);
+
+            logger->debug("Configuring box control register --> socket {}, CHA {}, by writing 0x{:x} to core {} (fd: {}), offset 0x{:x}.",
+                                          socket, cha, msr_val, 0, fds[0], msr_num);
+
             for(int i = 0; i < vals.size(); ++i) {
                 uint64_t val = vals[i];
                 uint64_t offset = CHA_MSR_PMON_CTRL_BASE + (0x10 * cha) + i;
@@ -83,7 +90,7 @@ void setAllUncoreRegisters(const std::vector<unsigned int>& vals)
 
 void setAllUncoreMeshTrafficMeasure()
 {
-    logger->info(__PRETTY_FUNCTION__);
+    logger->debug(__PRETTY_FUNCTION__);
     std::vector<unsigned int> vals{LEFT_READ, RIGHT_READ, UP_READ, DOWN_READ};
 
     setAllUncoreRegisters(vals);

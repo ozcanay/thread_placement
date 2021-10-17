@@ -24,5 +24,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 install(FILES
     thft_core_topo.txt
     thft_cha_topo.txt
+    automate.sh
     DESTINATION
     ${CMAKE_SOURCE_DIR}/build)

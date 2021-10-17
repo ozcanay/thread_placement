@@ -1,6 +1,9 @@
 #!/bin/sh
-for i in {1..100}
+for i in {0..10}
 do
-        ./placer
+for j in {0..10}
+do
+        ./placer $i $j
         sleep 5
+done
 done

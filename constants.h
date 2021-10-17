@@ -13,10 +13,29 @@ static constexpr long CHA_MSR_PMON_CTRL_BASE = 0x0E01L;
 static constexpr long CHA_MSR_PMON_CTR_BASE  = 0x0E08L;
 
 /// mesh traffic
+// block / data
 static constexpr unsigned int LEFT_READ  = 0x004003AB; /// horizontal_bl_ring
 static constexpr unsigned int RIGHT_READ = 0x00400CAB; /// horizontal_bl_ring
 static constexpr unsigned int UP_READ    = 0x004003AA; /// vertical_bl_ring
 static constexpr unsigned int DOWN_READ  = 0x00400CAA; /// vertical_bl_ring
+
+// addresses / snooping?
+static constexpr unsigned int LEFT_AD_READ  = 0x004003A7; /// horizontal_ad_ring
+static constexpr unsigned int RIGHT_AD_READ = 0x00400CA7; /// horizontal_ad_ring
+static constexpr unsigned int UP_AD_READ    = 0x004003A6; /// vertical_ad_ring
+static constexpr unsigned int DOWN_AD_READ  = 0x00400CA6; /// vertical_ad_ring
+
+// acknowledgements
+static constexpr unsigned int LEFT_AK_READ  = 0x004003A9; /// horizontal_ak_ring
+static constexpr unsigned int RIGHT_AK_READ = 0x00400CA9; /// horizontal_ak_ring
+static constexpr unsigned int UP_AK_READ    = 0x004003A8; /// vertical_ak_ring
+static constexpr unsigned int DOWN_AK_READ  = 0x00400CA8; /// vertical_ak_ring
+
+// invalidations
+static constexpr unsigned int LEFT_IV_READ  = 0x004001AD; /// horizontal_iv_ring
+static constexpr unsigned int RIGHT_IV_READ = 0x004004AD; /// horizontal_iv_ring
+static constexpr unsigned int UP_IV_READ    = 0x004001AC; /// vertical_iv_ring
+static constexpr unsigned int DOWN_IV_READ  = 0x004004AC; /// vertical_iv_ring
 
 ///// cache
 
@@ -44,7 +63,7 @@ static constexpr unsigned int LLC_LOCAL_LOOKUP        = 0x00403134;
 static constexpr unsigned int LLC_REMOTE_LOOKUP       = 0x00409134;
 static constexpr unsigned int LLC_DATA_READ_LOOKUP    = 0x00400334;
 static constexpr unsigned int LLC_WRITE_LOOKUP        = 0x00400534;
-static constexpr unsigned int LLC_REMOTE_SNOOP_LOOKUP = 0x00400934;
+static constexpr unsigned int LLC_REMOTE_SNOOP_LOOKUP = 0x00400934; /// mccalping made these 0x0043, but this implies making reserved bit 1. why???
 
 static constexpr unsigned int DIR_LOOKUP_SNP_NOSNP = 0x00400353; /// umask is SNP | NO_SNP
 static constexpr unsigned int DIR_LOOKUP_SNP = 0x00400153; /// umask is SNP
@@ -69,6 +88,21 @@ static std::unordered_map<unsigned int, std::string> descriptions {
     {RIGHT_READ, "RIGHT_READ"},
     {UP_READ, "UP_READ"},
     {DOWN_READ, "DOWN_READ"},
+
+    {LEFT_AD_READ, "LEFT_AD_READ"},
+    {RIGHT_AD_READ, "RIGHT_AD_READ"},
+    {UP_AD_READ, "UP_AD_READ"},
+    {DOWN_AD_READ, "DOWN_AD_READ"},
+
+    {LEFT_AK_READ, "LEFT_AK_READ"},
+    {RIGHT_AK_READ, "RIGHT_AK_READ"},
+    {UP_AK_READ, "UP_AK_READ"},
+    {DOWN_AK_READ, "DOWN_AK_READ"},
+
+    {LEFT_IV_READ, "LEFT_IV_READ"},
+    {RIGHT_IV_READ, "RIGHT_IV_READ"},
+    {UP_IV_READ, "UP_IV_READ"},
+    {DOWN_IV_READ, "DOWN_IV_READ"},
 
     {LLC_ANY_LOOKUP, "LLC_ANY_LOOKUP"},
     {LLC_LOCAL_LOOKUP, "LLC_LOCAL_LOOKUP"},
