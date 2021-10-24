@@ -65,7 +65,7 @@ void setAllUncoreRegisters(const std::vector<unsigned int>& vals)
         for(int cha = 0; cha < NUM_CHA_BOXES; ++cha) {
             long core = processor_in_socket[socket];
 
-            auto msr_num = 0xe00 + 0x10 * cha;		// box control register -- set enable bit
+            auto msr_num = 0xe00 + CHA_BASE * cha;		// box control register -- set enable bit
 			auto msr_val = 0x00400000;
 			pwrite(fds[0], &msr_val, sizeof(msr_val), msr_num);
 
@@ -74,7 +74,7 @@ void setAllUncoreRegisters(const std::vector<unsigned int>& vals)
 
             for(int i = 0; i < vals.size(); ++i) {
                 uint64_t val = vals[i];
-                uint64_t offset = CHA_MSR_PMON_CTRL_BASE + (0x10 * cha) + i;
+                uint64_t offset = CHA_MSR_PMON_CTRL_BASE + (CHA_BASE * cha) + i;
 
                 ssize_t rc64 = pwrite(fds[core], &val, sizeof(val), offset);
                 if(rc64 == 8) {
@@ -86,12 +86,20 @@ void setAllUncoreRegisters(const std::vector<unsigned int>& vals)
             }
         }
     }
+
+    logger->debug("closing file descriptors of MSRs.");
+    for(const auto& p : fds) {
+        int cpu = p.first;
+        int to_be_closed = p.second;
+        logger->debug("closing fd {} of cpu {}.", to_be_closed, cpu);
+        ::close(to_be_closed);
+    }
 }
 
 void setAllUncoreMeshTrafficMeasure()
 {
     logger->debug(__PRETTY_FUNCTION__);
-    std::vector<unsigned int> vals{LEFT_READ, RIGHT_READ, UP_READ, DOWN_READ};
+    std::vector<unsigned int> vals{LEFT_BL_READ, RIGHT_BL_READ, UP_BL_READ, DOWN_BL_READ};
 
     setAllUncoreRegisters(vals);
 }

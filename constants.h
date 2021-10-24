@@ -11,13 +11,16 @@ static constexpr int NUM_CHA_BOXES    = 18;
 /// base
 static constexpr long CHA_MSR_PMON_CTRL_BASE = 0x0E01L;
 static constexpr long CHA_MSR_PMON_CTR_BASE  = 0x0E08L;
+static constexpr int CHA_BASE = 0x10;
 
 /// mesh traffic
 // block / data
-static constexpr unsigned int LEFT_READ  = 0x004003AB; /// horizontal_bl_ring
-static constexpr unsigned int RIGHT_READ = 0x00400CAB; /// horizontal_bl_ring
-static constexpr unsigned int UP_READ    = 0x004003AA; /// vertical_bl_ring
-static constexpr unsigned int DOWN_READ  = 0x00400CAA; /// vertical_bl_ring
+static constexpr unsigned int LEFT_BL_READ  = 0x004003AB; /// horizontal_bl_ring
+static constexpr unsigned int RIGHT_BL_READ = 0x00400CAB; /// horizontal_bl_ring
+
+static constexpr unsigned int UP_BL_READ    = 0x004003AA; /// vertical_bl_ring
+static constexpr unsigned int DOWN_BL_READ  = 0x00400CAA; /// vertical_bl_ring
+static constexpr unsigned int VERT_BL_ALL_READ = 0x00400FAA; /// vertical_bl_ring
 
 // addresses / snooping?
 static constexpr unsigned int LEFT_AD_READ  = 0x004003A7; /// horizontal_ad_ring
@@ -36,10 +39,38 @@ static constexpr unsigned int LEFT_IV_READ  = 0x004001AD; /// horizontal_iv_ring
 static constexpr unsigned int RIGHT_IV_READ = 0x004004AD; /// horizontal_iv_ring
 static constexpr unsigned int UP_IV_READ    = 0x004001AC; /// vertical_iv_ring
 static constexpr unsigned int DOWN_IV_READ  = 0x004004AC; /// vertical_iv_ring
+// static constexpr unsigned int DOWN_IV_ALL  = 0x004004AC; /// vertical_iv_ring
+
+/// hitme cache
+// lookup:  Counts Number of times HitMe Cache is accessed.
+static constexpr unsigned int HITME_LOOKUP_READ  = 0x0040015E;
+static constexpr unsigned int HITME_LOOKUP_WRITE = 0x0040025E;
+static constexpr unsigned int HITME_LOOKUP_ALL   = 0x0040035E;
+
+// hit:   Counts Number of Hits in HitMe Cache
+static constexpr unsigned int HITME_HIT_EX_RDS        = 0x0040015F;
+static constexpr unsigned int HITME_HIT_SHARED_OWNREQ = 0x0040045F;
+static constexpr unsigned int HITME_HIT_WBMTOE        = 0x0040085F;
+static constexpr unsigned int HITME_HIT_WBMTOI_OR_S   = 0x0040105F;
+static constexpr unsigned int HITME_HIT_ALL           = 0x00401D5F;
+
+// miss:  Counts Number of Misses in HitMe Cache
+static constexpr unsigned int HITME_MISS_SHARED_RDINVOWN    = 0x00402060;
+static constexpr unsigned int HITME_MISS_NOTSHARED_RDINVOWN = 0x00404060;
+static constexpr unsigned int HITME_MISS_READ_OR_INV        = 0x00408060;
+static constexpr unsigned int HITME_MISS_ALL                = 0x0040E060;
+
+// update:  Counts the number of Allocate/Update to HitMe Cache
+static constexpr unsigned int HITME_UPDATE_DEALLOCATE_RSPFWDI_LOC = 0x00400161;
+static constexpr unsigned int HITME_UPDATE_RSPFWDI_REM            = 0x00400261;
+static constexpr unsigned int HITME_UPDATE_SHARED                 = 0x00400461;
+static constexpr unsigned int HITME_UPDATE_RDINVOWN               = 0x00400861;
+static constexpr unsigned int HITME_UPDATE_DEALLOCATE             = 0x00401061;
+static constexpr unsigned int HITME_UPDATE_ALL                    = 0x00401F61;
 
 ///// cache
 
-// llc lookups
+// llc lookups:  Cache and Snoop Filter Lookups
 
 // Definition: Counts the number of times the LLC was accessed - this includes code,
 // data, prefetches and hints coming from L2. This has numerous filters available. Note
@@ -84,10 +115,12 @@ static constexpr unsigned int FILTER1_OFF = 0x0000003B; /// 3B essentially turns
 
 
 static std::unordered_map<unsigned int, std::string> descriptions {
-    {LEFT_READ, "LEFT_READ"},
-    {RIGHT_READ, "RIGHT_READ"},
-    {UP_READ, "UP_READ"},
-    {DOWN_READ, "DOWN_READ"},
+    {LEFT_BL_READ, "LEFT_BL_READ"},
+    {RIGHT_BL_READ, "RIGHT_BL_READ"},
+    
+    {UP_BL_READ, "UP_BL_READ"},
+    {DOWN_BL_READ, "DOWN_BL_READ"},
+    {VERT_BL_ALL_READ, "VERT_BL_ALL_READ"},
 
     {LEFT_AD_READ, "LEFT_AD_READ"},
     {RIGHT_AD_READ, "RIGHT_AD_READ"},
@@ -103,6 +136,28 @@ static std::unordered_map<unsigned int, std::string> descriptions {
     {RIGHT_IV_READ, "RIGHT_IV_READ"},
     {UP_IV_READ, "UP_IV_READ"},
     {DOWN_IV_READ, "DOWN_IV_READ"},
+
+    {HITME_LOOKUP_READ, "HITME_LOOKUP_READ"},
+    {HITME_LOOKUP_WRITE, "HITME_LOOKUP_WRITE"},
+    {HITME_LOOKUP_ALL, "HITME_LOOKUP_ALL"},
+
+    {HITME_HIT_EX_RDS, "HITME_HIT_EX_RDS"},
+    {HITME_HIT_SHARED_OWNREQ, "HITME_HIT_SHARED_OWNREQ"},
+    {HITME_HIT_WBMTOE, "HITME_HIT_WBMTOE"},
+    {HITME_HIT_WBMTOI_OR_S, "HITME_HIT_WBMTOI_OR_S"},
+    {HITME_HIT_ALL, "HITME_HIT_ALL"},
+
+    {HITME_MISS_SHARED_RDINVOWN, "HITME_MISS_SHARED_RDINVOWN"},
+    {HITME_MISS_NOTSHARED_RDINVOWN, "HITME_MISS_NOTSHARED_RDINVOWN"},
+    {HITME_MISS_READ_OR_INV, "HITME_MISS_READ_OR_INV"},
+    {HITME_MISS_ALL, "HITME_MISS_ALL"},
+
+    {HITME_UPDATE_DEALLOCATE_RSPFWDI_LOC, "HITME_UPDATE_DEALLOCATE_RSPFWDI_LOC"},
+    {HITME_UPDATE_RSPFWDI_REM, "HITME_UPDATE_RSPFWDI_REM"},
+    {HITME_UPDATE_SHARED, "HITME_UPDATE_SHARED"},
+    {HITME_UPDATE_RDINVOWN, "HITME_UPDATE_RDINVOWN"},
+    {HITME_UPDATE_DEALLOCATE, "HITME_UPDATE_DEALLOCATE"},
+    {HITME_UPDATE_ALL, "HITME_UPDATE_ALL"},
 
     {LLC_ANY_LOOKUP, "LLC_ANY_LOOKUP"},
     {LLC_LOCAL_LOOKUP, "LLC_LOCAL_LOOKUP"},

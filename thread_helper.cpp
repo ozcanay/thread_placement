@@ -21,7 +21,7 @@ void stick_this_thread_to_core(int core_id) {
     int res = pthread_setaffinity_np(current_thread, sizeof(cpu_set_t), &cpuset);
 
     if(res == 0) {
-        logger->info("This thread bound to core {} successfully.", core_id);
+        logger->info("Thread bound to core {} successfully.", core_id);
     } else {
         logger->error("Error in binding this thread to core {}.", core_id);
     }

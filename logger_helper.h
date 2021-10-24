@@ -6,4 +6,4 @@
 
 extern spdlog::logger* logger;
 
-void setLogger();
+void setLogger(const std::string& log_name);
