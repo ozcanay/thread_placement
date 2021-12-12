@@ -17,7 +17,6 @@ static constexpr int CHA_BASE = 0x10;
 // block / data
 static constexpr unsigned int LEFT_BL_READ  = 0x004003AB; /// horizontal_bl_ring
 static constexpr unsigned int RIGHT_BL_READ = 0x00400CAB; /// horizontal_bl_ring
-
 static constexpr unsigned int UP_BL_READ    = 0x004003AA; /// vertical_bl_ring
 static constexpr unsigned int DOWN_BL_READ  = 0x00400CAA; /// vertical_bl_ring
 static constexpr unsigned int VERT_BL_ALL_READ = 0x00400FAA; /// vertical_bl_ring

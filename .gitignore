@@ -1,1 +1,3 @@
-/build
+build/
+log_backup/
+logs_backup_10_nov_2021/
