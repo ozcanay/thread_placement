@@ -32,6 +32,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 install(FILES
     thft_core_topo.txt
     thft_cha_topo.txt
+    BaseSequence_SKX_18-slice.txt
     automate.sh
     DESTINATION
     ${CMAKE_SOURCE_DIR}/build)

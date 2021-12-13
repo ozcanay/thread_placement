@@ -8,7 +8,7 @@
 
 #include <algorithm>
 
-spdlog::logger* logger = nullptr;
+std::shared_ptr<spdlog::logger> logger = nullptr;
 
 #include <set>
 #include <unistd.h>
@@ -16,6 +16,7 @@ spdlog::logger* logger = nullptr;
 #include <iostream>
 #include <thread>
 #include <mutex>
+#include <fstream>
 #include <condition_variable>
 #include <csignal>
 #include <atomic>
@@ -102,27 +103,38 @@ void testSameCacheLineCHAAssignment();
 
 int g_assigned_cha = -1;
 
-int compute_perm(long addr)
+int compute_perm(long physical_address)
 {
     long SelectorMasks[14] = {0x4c8fc0000, 0x1d05380000, 0x262b8c0000, 0x41f500000, 0x2c6d780000,
                               0x2cd5140000, 0x21d80c0000, 0x3b3f480000, 0x3a03500000, 0x3033280000,
                               0x0, 0x1469b40000, 0x0, 0x0};
     long i,j,k;
+    // long i,j,k;
     int computed_perm = 0;
  
     for (int bit=0; bit<14; bit++) {
-        logger->info("{:x}", SelectorMasks[bit]);
-        continue; 
-    k = SelectorMasks[bit] & addr; // bitwise AND with mask
-    j = __builtin_popcountl(k);
-    // count number of bits set
-    i = j%2;
-    // compute parity
-    computed_perm += (i<<bit);
-    // scale and accumulate
+        auto permutation_selector_mask = SelectorMasks[bit];
+        logger->debug("Selector mask: 0b{:b}; 0x{:x}", permutation_selector_mask, permutation_selector_mask);
+
+        k = permutation_selector_mask & physical_address; // bitwise AND with mask
+        logger->debug("will AND below 2 numbers.");
+        logger->debug("0b{:064b} (0x{:016x})", permutation_selector_mask, permutation_selector_mask);
+        logger->debug("0b{:064b} (0x{:016x})", physical_address, physical_address);
+        logger->debug("0b{:064b} (0x{:016x}) -> AND (&) result.", k, k);
+        
+        j = __builtin_popcountl(k); // count number of bits set
+        logger->debug("Number of bits in 0b{:b} : {}", k, j);
+
+        i = j % 2; // compute parity
+        logger->debug("Parity of 0b{:b}: {}", j, i);
+        
+        computed_perm += (i << bit); // scale and accumulate
+        logger->debug("computed permutation += Parity ({}) << {} --> 0b{:b}", i, bit, computed_perm);
     }
 
-    return (computed_perm);
+    logger->debug("Computed permutation for physical address 0x{:x}: {}", physical_address, computed_perm);
+
+    return (computed_perm); /// why parentheses around variable here?
 }
 
 
@@ -314,6 +326,45 @@ int virt_to_phys_user(uintptr_t *paddr, pid_t pid, uintptr_t vaddr)
     return 0;
 }
 
+int getIndex(long physical_address)
+{
+    /// 2^m = baseSequenceLength. m = 12 on SKX with 18 cores.
+    /// Therefore "index" bits are 17:6. -> 12 bits in total represent index value.
+    logger->debug("{} is called for physical address 0x{:x} (0b{:b}).", __PRETTY_FUNCTION__, physical_address, physical_address);
+
+    physical_address = physical_address >> 6;
+    logger->debug("shifted right to 6 bits: 0b{:b}", physical_address);
+
+    int index_mask = 0xFFF;
+    long index = physical_address & index_mask;
+    logger->debug("index after mask is applied: 0b{:b}", index);
+
+    logger->debug("physi -> 0b{:064b}", physical_address);
+    logger->debug("index -> 0b{:064b}, 0x{:x}, {}", index, index, index);
+
+    return index;
+}
+
+std::vector<int> readBaseSequence(const std::string& filename)
+{
+    std::vector<int> res;
+
+    std::ifstream infile(filename);
+    int a;
+    while (infile >> a) {
+        res.push_back(a);
+    }
+
+    // logger->debug("Base sequence: ");
+    // for(auto num : res) {
+    //     logger->debug(num);
+    // }
+
+    logger->debug("base sequence size: {}", res.size());
+
+    return res;
+}
+
 // int main(int argc, char **argv)
 // {
 //     assertRoot();
@@ -353,35 +404,56 @@ int virt_to_phys_user(uintptr_t *paddr, pid_t pid, uintptr_t vaddr)
 
 /// virt to phys translation
 
-
-int g_deneme = 0;
-
-enum { I0 = 0x12345678 };
-static volatile uint32_t i = I0;
-
 int main(int argc, char** argv)
 {   
-    setLogger("logs/imc.txt");
+    std::signal(SIGHUP, SIG_IGN);
+    setLogger("logs/cha_finding.txt");
+    assertRoot(); /// assert root must come after setLogger() since it uses logger instance.
     logger->info("================================================ STARTING ================================================");
-    compute_perm(1);
-
-    uintptr_t paddr = 0;
+    
     pid_t pid = getpid();
 
-    int a = 10;
-    uintptr_t vaddr = reinterpret_cast<uintptr_t>(&i);
+    long long var = 10;
+    uintptr_t physical_address = 0;
 
-    if (virt_to_phys_user(&paddr, pid, vaddr)) {
-        fprintf(stderr, "error: virt_to_phys_user\n");
+    uintptr_t virtual_address = reinterpret_cast<uintptr_t>(&var);
+
+    if (virt_to_phys_user(&physical_address, pid, virtual_address)) {
+        logger->error("error: virt_to_phys_user");
         return EXIT_FAILURE;
     };
     
-    printf("0x%jx\n", (uintmax_t)paddr);
+    // printf("uintmax_t vaddr: 0x%jx\n", (uintmax_t)vaddr);
+    // printf("uintptr_t vaddr: 0x%jx\n", (uintptr_t)vaddr);
+    // printf("uintmax_t paddr: 0x%jx\n", (uintmax_t)paddr);
+    // printf("uintptr_t paddr: 0x%jx\n", (uintptr_t)paddr);
+    
+    logger->info("virtual address 0x{:x} is mapped to physical address 0x{:x}.", virtual_address, physical_address);
+
+    auto computed_perm = compute_perm(physical_address);
+
+    auto physical_address_index = getIndex(physical_address);
+
+    auto base_sequence_index = computed_perm ^ physical_address_index; /// XOR'ing.
+    
+
+    std::vector<int> base_sequence = readBaseSequence("BaseSequence_SKX_18-slice.txt");
+    logger->debug("base_sequence_index: {}", base_sequence_index);
+
+    assert(base_sequence_index < 4096 && "Base sequence must be lower than 4096!");
+    int cha_by_hashing = base_sequence[base_sequence_index];
+    logger->debug("CHA of virtual address 0x:{:x} is {}", virtual_address, cha_by_hashing);
+
+    // void* cache_line = allocateCacheLine();
+    // auto data = static_cast<long long*>(cache_line);
+    int cha_by_perf_counters = findCHA(&var);
+
+    logger->info("End result --> PerfCounters: {}, Hashing: {}", cha_by_perf_counters, cha_by_hashing);
 
     return 0;
     
-    assertRoot();
-    initializeMMConfigPtr();
+    
+    initializeMMConfigPtr(); /// will need this for IMC counters.
 
 
 

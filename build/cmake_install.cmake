@@ -39,7 +39,7 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/thft/aydin_workspace/thread_placement/build/thft_core_topo.txt;/home/thft/aydin_workspace/thread_placement/build/thft_cha_topo.txt;/home/thft/aydin_workspace/thread_placement/build/automate.sh")
+   "/home/thft/aydin_workspace/thread_placement/build/thft_core_topo.txt;/home/thft/aydin_workspace/thread_placement/build/thft_cha_topo.txt;/home/thft/aydin_workspace/thread_placement/build/BaseSequence_SKX_18-slice.txt;/home/thft/aydin_workspace/thread_placement/build/automate.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
@@ -49,6 +49,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 file(INSTALL DESTINATION "/home/thft/aydin_workspace/thread_placement/build" TYPE FILE FILES
     "/home/thft/aydin_workspace/thread_placement/thft_core_topo.txt"
     "/home/thft/aydin_workspace/thread_placement/thft_cha_topo.txt"
+    "/home/thft/aydin_workspace/thread_placement/BaseSequence_SKX_18-slice.txt"
     "/home/thft/aydin_workspace/thread_placement/automate.sh"
     )
 endif()

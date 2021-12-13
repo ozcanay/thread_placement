@@ -50,6 +50,7 @@ CMakeFiles/placer.dir/cpu_helper.cpp.o
  /usr/local/include/spdlog/sinks/sink.h
  /usr/local/include/spdlog/sinks/stdout_color_sinks-inl.h
  /usr/local/include/spdlog/sinks/stdout_color_sinks.h
+ /usr/local/include/spdlog/sinks/syslog_sink.h
  /usr/local/include/spdlog/sinks/wincolor_sink-inl.h
  /usr/local/include/spdlog/sinks/wincolor_sink.h
  /usr/local/include/spdlog/spdlog-inl.h
@@ -105,6 +106,7 @@ CMakeFiles/placer.dir/logger_helper.cpp.o
  /usr/local/include/spdlog/sinks/sink.h
  /usr/local/include/spdlog/sinks/stdout_color_sinks-inl.h
  /usr/local/include/spdlog/sinks/stdout_color_sinks.h
+ /usr/local/include/spdlog/sinks/syslog_sink.h
  /usr/local/include/spdlog/sinks/wincolor_sink-inl.h
  /usr/local/include/spdlog/sinks/wincolor_sink.h
  /usr/local/include/spdlog/spdlog-inl.h
@@ -161,6 +163,7 @@ CMakeFiles/placer.dir/main.cpp.o
  /usr/local/include/spdlog/sinks/sink.h
  /usr/local/include/spdlog/sinks/stdout_color_sinks-inl.h
  /usr/local/include/spdlog/sinks/stdout_color_sinks.h
+ /usr/local/include/spdlog/sinks/syslog_sink.h
  /usr/local/include/spdlog/sinks/wincolor_sink-inl.h
  /usr/local/include/spdlog/sinks/wincolor_sink.h
  /usr/local/include/spdlog/spdlog-inl.h
@@ -217,6 +220,7 @@ CMakeFiles/placer.dir/thread_helper.cpp.o
  /usr/local/include/spdlog/sinks/sink.h
  /usr/local/include/spdlog/sinks/stdout_color_sinks-inl.h
  /usr/local/include/spdlog/sinks/stdout_color_sinks.h
+ /usr/local/include/spdlog/sinks/syslog_sink.h
  /usr/local/include/spdlog/sinks/wincolor_sink-inl.h
  /usr/local/include/spdlog/sinks/wincolor_sink.h
  /usr/local/include/spdlog/spdlog-inl.h

@@ -22,11 +22,13 @@ map
 
 /home/thft/aydin_workspace/thread_placement/logger_helper.h
 spdlog/spdlog.h
-/home/thft/aydin_workspace/thread_placement/spdlog/spdlog.h
-spdlog/sinks/stdout_color_sinks.h
-/home/thft/aydin_workspace/thread_placement/spdlog/sinks/stdout_color_sinks.h
+-
+spdlog/sinks/syslog_sink.h
+-
 spdlog/sinks/basic_file_sink.h
-/home/thft/aydin_workspace/thread_placement/spdlog/sinks/basic_file_sink.h
+-
+spdlog/sinks/stdout_color_sinks.h
+-
 
 /home/thft/aydin_workspace/thread_placement/main.cpp
 thread_helper.h
@@ -54,6 +56,8 @@ iostream
 thread
 -
 mutex
+-
+fstream
 -
 condition_variable
 -
@@ -647,6 +651,20 @@ spdlog/details/synchronous_factory.h
 -
 stdout_color_sinks-inl.h
 /usr/local/include/spdlog/sinks/stdout_color_sinks-inl.h
+
+/usr/local/include/spdlog/sinks/syslog_sink.h
+spdlog/sinks/base_sink.h
+-
+spdlog/details/null_mutex.h
+-
+spdlog/details/synchronous_factory.h
+-
+array
+-
+string
+-
+syslog.h
+-
 
 /usr/local/include/spdlog/sinks/wincolor_sink-inl.h
 spdlog/sinks/wincolor_sink.h
