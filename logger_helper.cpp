@@ -20,10 +20,10 @@ void setLogger(const std::string& log_name)
 
     try {
         auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-        console_sink->set_level(spdlog::level::info);
+        console_sink->set_level(spdlog::level::debug);
         console_sink->set_pattern("[multi_sink_example] [%^%l%$] %v");
 
-        auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/find_cha.txt", false);
+        auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_name, false);
         file_sink->set_level(spdlog::level::info);
 
         // auto syslog_logger = std::make_sharedspdlog::syslog_logger_mt("syslog", "pcap-parser", LOG_CONS | LOG_NDELAY, LOG_LOCAL2);
@@ -33,9 +33,9 @@ void setLogger(const std::string& log_name)
         // spdlog::flush_on(spdlog::level::info);
 
 
-        logger = std::make_shared<spdlog::logger>("multi_sink", spdlog::sinks_init_list({/*console_sink,*/ file_sink}));
-        logger->set_level(spdlog::level::info);
-        logger->flush_on(spdlog::level::info);
+        logger = std::make_shared<spdlog::logger>("multi_sink", spdlog::sinks_init_list({console_sink, file_sink}));
+        logger->set_level(spdlog::level::debug);
+        logger->flush_on(spdlog::level::debug);
     } catch (const spdlog::spdlog_ex &ex) {
         std::cout << "Log init failed: " << ex.what() << std::endl;
     }

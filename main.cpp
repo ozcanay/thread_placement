@@ -42,18 +42,13 @@ double g_chunk[100'000'000] = {0.0};
 
 
 
-
-
-int IMC_BUS_Socket[2] = {0x3a};
-int IMC_Device_Channel[6] = {0x0a, 0x0a, 0x0b, 0x0c, 0x0c, 0x0d};
-int IMC_Function_Channel[6] = {0x2, 0x6, 0x2, 0x2, 0x6, 0x2};
-int IMC_PmonCtl_Offset[5] = {0xd8, 0xdc, 0xe0, 0xe4, 0xf0}; 
-int IMC_PmonCtr_Offset[5] = {0xa0, 0xa8, 0xb0, 0xb8, 0xd0};
+int IMC_BUS_Socket[1] = {0x3a}; /// where did we get this address from?
+int IMC_Device_Channel[6] = {0x0a, 0x0a, 0x0b, 0x0c, 0x0c, 0x0d}; /// device addresses in each channel.
+int IMC_Function_Channel[6] = {0x2, 0x6, 0x2, 0x2, 0x6, 0x2}; /// function addresses in each channel.
+int IMC_PmonCtl_Offset[5] = {0xd8, 0xdc, 0xe0, 0xe4, 0xf0}; /// 5 counters in total, last one DCLK
+int IMC_PmonCtr_Offset[5] = {0xa0, 0xa8, 0xb0, 0xb8, 0xd0}; /// 5 counters in total, last one DCLK
 
 unsigned int *mmconfig_ptr;         // must be pointer to 32-bit int so compiler will generate 32-bit loads and stores
-
-
-
 
 
 #include <random>
@@ -407,7 +402,7 @@ std::vector<int> readBaseSequence(const std::string& filename)
 int main(int argc, char** argv)
 {   
     std::signal(SIGHUP, SIG_IGN);
-    setLogger("logs/cha_finding.txt");
+    setLogger("logs/imc_denemeleri.txt");
     assertRoot(); /// assert root must come after setLogger() since it uses logger instance.
     logger->info("================================================ STARTING ================================================");
     
@@ -446,17 +441,89 @@ int main(int argc, char** argv)
 
     // void* cache_line = allocateCacheLine();
     // auto data = static_cast<long long*>(cache_line);
-    int cha_by_perf_counters = findCHA(&var);
+    // int cha_by_perf_counters = findCHA(&var);
 
-    logger->info("End result --> PerfCounters: {}, Hashing: {}", cha_by_perf_counters, cha_by_hashing);
-
-    return 0;
+    // logger->info("End result --> PerfCounters: {}, Hashing: {}", cha_by_perf_counters, cha_by_hashing);
     
     
     initializeMMConfigPtr(); /// will need this for IMC counters.
 
+    logger->info("Programming IMC counters.");
 
+    // int imc = 0;
+    // int subchannel = 0;
+    // unsigned int CAS_COUNT_READS = 0x00400304;
+    // unsigned int CAS_COUNT_WRITES = 0x00400C04;
+    // unsigned int ACT_ALL = 0x00400B01;
+    // unsigned int PRE_COUNT_MISS = 0x00400102;
+    // unsigned int DCLK = 0x00400000;
 
+    // std::vector<unsigned int> imc_settings{CAS_COUNT_READS, CAS_COUNT_WRITES, ACT_ALL, PRE_COUNT_MISS, DCLK};
+
+    // int counter = 0;
+    	
+    // uint32_t channel = 3*imc + subchannel;				// PCI device/function is indexed by channel here (0-5)
+    // uint32_t bus = IMC_BUS_Socket[0];
+    // uint32_t device = IMC_Device_Channel[channel];
+    // uint32_t function = IMC_Function_Channel[channel];
+    // uint32_t offset = IMC_PmonCtl_Offset[counter];
+    // uint32_t index = PCI_cfg_index(bus, device, function, offset);
+    // mmconfig_ptr[index] = CAS_COUNT_READS;
+	char filename[100];
+    FILE *input_file;
+
+	sprintf(filename,"imc_perfevtsel.input");
+	input_file = fopen(filename,"r");
+	if (input_file == 0) {
+        logger->error("Error trying to open file!");
+		exit(-1);
+	}
+
+    char description[100];
+    uint32_t bus, device, function, offset, ctl_offset, ctr_offset, value, index;
+	uint32_t dummy32u;
+	uint32_t socket, imc, channel, subchannel, counter;
+    int rc;
+
+	int i = 0;
+	while (i<100) {
+		rc = fscanf(input_file,"%d %d %d %d %x %s",&socket,&imc,&subchannel,&counter,&value,&description);
+		if (rc == EOF) break;
+		i++;
+		channel = 3*imc + subchannel;				// PCI device/function is indexed by channel here (0-5)
+		bus = IMC_BUS_Socket[socket];
+		device = IMC_Device_Channel[channel];
+		function = IMC_Function_Channel[channel];
+		offset = IMC_PmonCtl_Offset[counter];
+		// fprintf(log_file,"DEBUG: translated bus/device/function/offset values %#x %#x %#x %#x\n",bus,device,function,offset);
+		index = PCI_cfg_index(bus, device, function, offset);
+		mmconfig_ptr[index] = value;
+
+        logger->debug("i: {}, Writing socket: {}, bus: {:x}, channel: {}, device: {:x}, function: {:x}, offset: {:x}, index: {} --> value: {:x}", i, socket, bus, channel, device, function, offset, index, value);
+	}
+	fclose(input_file);
+
+	
+    logger->info("Reading IMC counters.");
+    for (uint32_t socket=0; socket<1; socket++) {
+		uint32_t bus = IMC_BUS_Socket[socket];
+		for (uint32_t channel=0; channel<NUM_IMC_CHANNELS; channel++) {
+			uint32_t device = IMC_Device_Channel[channel];
+			uint32_t function = IMC_Function_Channel[channel];
+
+			for (uint32_t counter=0; counter<NUM_IMC_COUNTERS; counter++) {
+				uint32_t offset = IMC_PmonCtr_Offset[counter];
+				uint32_t index = PCI_cfg_index(bus, device, function, offset);
+				uint32_t low = mmconfig_ptr[index];
+				uint32_t high = mmconfig_ptr[index+1];
+				uint64_t count = ((uint64_t) high) << 32 | (uint64_t) low;
+
+                logger->debug("Reading socket: {}, bus: {:x}, channel: {}, device: {:x}, function: {:x}, counter: {},"
+                " offset: {:x}, index: {:x}, low: {:x}, high: {:x} --> count: {} ({:x})", 
+                socket, bus, channel, device, function, counter, offset, index, low, high, count, count);
+			}
+		}
+	}
 
     return 0;
     // std::signal(SIGHUP, SIG_IGN);
@@ -595,7 +662,7 @@ int findCHA(long long* data, int index)
     logger->debug("-------------------------------------------------------------- FINDCHA STARTED -------------------------------------------------------------------");
     logger->debug("index: {}", index);
 
-    stick_this_thread_to_core(0); /// stick thread to any core.
+    stick_this_thread_to_core(17); /// stick thread to any core. --> made this 17 from 0 so that I dont bind to an isolated core. isolated cores are 0-15 last time I checked. 
 
     const long long iteration_count = 300'000'000;
     logger->info("number of iterations for flush step: {} million.", iteration_count / 1'000'000);

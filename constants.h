@@ -3,6 +3,10 @@
 #include <string>
 #include <unordered_map>
 
+/// IMC
+static constexpr int NUM_IMC_CHANNELS = 6; // includes channels on all IMCs in a socket. 2 IMCs with each have 3 channels, making up to 6 in total.
+static constexpr int NUM_IMC_COUNTERS = 5; // 0-3 are the 4 programmable counters, 4 is the fixed-function DCLK counter
+
 /// general
 static constexpr int CACHE_LINE_SIZE  = 64;
 static constexpr int NUM_SOCKETS      = 1;
