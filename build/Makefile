@@ -169,6 +169,33 @@ placer/fast:
 	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/build
 .PHONY : placer/fast
 
+cha_helper.o: cha_helper.cpp.o
+
+.PHONY : cha_helper.o
+
+# target to build an object file
+cha_helper.cpp.o:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/cha_helper.cpp.o
+.PHONY : cha_helper.cpp.o
+
+cha_helper.i: cha_helper.cpp.i
+
+.PHONY : cha_helper.i
+
+# target to preprocess a source file
+cha_helper.cpp.i:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/cha_helper.cpp.i
+.PHONY : cha_helper.cpp.i
+
+cha_helper.s: cha_helper.cpp.s
+
+.PHONY : cha_helper.s
+
+# target to generate assembly for a file
+cha_helper.cpp.s:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/cha_helper.cpp.s
+.PHONY : cha_helper.cpp.s
+
 cpu_helper.o: cpu_helper.cpp.o
 
 .PHONY : cpu_helper.o
@@ -195,6 +222,33 @@ cpu_helper.s: cpu_helper.cpp.s
 cpu_helper.cpp.s:
 	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/cpu_helper.cpp.s
 .PHONY : cpu_helper.cpp.s
+
+imc_helper.o: imc_helper.cpp.o
+
+.PHONY : imc_helper.o
+
+# target to build an object file
+imc_helper.cpp.o:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/imc_helper.cpp.o
+.PHONY : imc_helper.cpp.o
+
+imc_helper.i: imc_helper.cpp.i
+
+.PHONY : imc_helper.i
+
+# target to preprocess a source file
+imc_helper.cpp.i:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/imc_helper.cpp.i
+.PHONY : imc_helper.cpp.i
+
+imc_helper.s: imc_helper.cpp.s
+
+.PHONY : imc_helper.s
+
+# target to generate assembly for a file
+imc_helper.cpp.s:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/imc_helper.cpp.s
+.PHONY : imc_helper.cpp.s
 
 intel_helper.o: intel_helper.cpp.o
 
@@ -277,6 +331,87 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+math_helper.o: math_helper.cpp.o
+
+.PHONY : math_helper.o
+
+# target to build an object file
+math_helper.cpp.o:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/math_helper.cpp.o
+.PHONY : math_helper.cpp.o
+
+math_helper.i: math_helper.cpp.i
+
+.PHONY : math_helper.i
+
+# target to preprocess a source file
+math_helper.cpp.i:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/math_helper.cpp.i
+.PHONY : math_helper.cpp.i
+
+math_helper.s: math_helper.cpp.s
+
+.PHONY : math_helper.s
+
+# target to generate assembly for a file
+math_helper.cpp.s:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/math_helper.cpp.s
+.PHONY : math_helper.cpp.s
+
+os_helper.o: os_helper.cpp.o
+
+.PHONY : os_helper.o
+
+# target to build an object file
+os_helper.cpp.o:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/os_helper.cpp.o
+.PHONY : os_helper.cpp.o
+
+os_helper.i: os_helper.cpp.i
+
+.PHONY : os_helper.i
+
+# target to preprocess a source file
+os_helper.cpp.i:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/os_helper.cpp.i
+.PHONY : os_helper.cpp.i
+
+os_helper.s: os_helper.cpp.s
+
+.PHONY : os_helper.s
+
+# target to generate assembly for a file
+os_helper.cpp.s:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/os_helper.cpp.s
+.PHONY : os_helper.cpp.s
+
+pci_helper.o: pci_helper.cpp.o
+
+.PHONY : pci_helper.o
+
+# target to build an object file
+pci_helper.cpp.o:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/pci_helper.cpp.o
+.PHONY : pci_helper.cpp.o
+
+pci_helper.i: pci_helper.cpp.i
+
+.PHONY : pci_helper.i
+
+# target to preprocess a source file
+pci_helper.cpp.i:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/pci_helper.cpp.i
+.PHONY : pci_helper.cpp.i
+
+pci_helper.s: pci_helper.cpp.s
+
+.PHONY : pci_helper.s
+
+# target to generate assembly for a file
+pci_helper.cpp.s:
+	$(MAKE) -f CMakeFiles/placer.dir/build.make CMakeFiles/placer.dir/pci_helper.cpp.s
+.PHONY : pci_helper.cpp.s
+
 string_helper.o: string_helper.cpp.o
 
 .PHONY : string_helper.o
@@ -344,9 +479,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... list_install_components"
 	@echo "... install"
+	@echo "... cha_helper.o"
+	@echo "... cha_helper.i"
+	@echo "... cha_helper.s"
 	@echo "... cpu_helper.o"
 	@echo "... cpu_helper.i"
 	@echo "... cpu_helper.s"
+	@echo "... imc_helper.o"
+	@echo "... imc_helper.i"
+	@echo "... imc_helper.s"
 	@echo "... intel_helper.o"
 	@echo "... intel_helper.i"
 	@echo "... intel_helper.s"
@@ -356,6 +497,15 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... math_helper.o"
+	@echo "... math_helper.i"
+	@echo "... math_helper.s"
+	@echo "... os_helper.o"
+	@echo "... os_helper.i"
+	@echo "... os_helper.s"
+	@echo "... pci_helper.o"
+	@echo "... pci_helper.i"
+	@echo "... pci_helper.s"
 	@echo "... string_helper.o"
 	@echo "... string_helper.i"
 	@echo "... string_helper.s"

@@ -8,4 +8,4 @@
 
 extern std::shared_ptr<spdlog::logger> logger;
 
-void setLogger(const std::string& log_name);
+void setLogger(const std::string& log_name, spdlog::level::level_enum level);
