@@ -37,15 +37,47 @@ void assertRoot()
 
 void* allocateCacheLine()
 {
-    int num_elements = CACHE_LINE_SIZE / sizeof(long long);
-    logger->debug("num elements: {}", num_elements);
     void *v_data = nullptr;
     /// allocate heap of size equal to just 1 cache line.
-    posix_memalign(&v_data, CACHE_LINE_SIZE, num_elements * sizeof(long long)); /// also try alignas 64 here from c++.
-    logger->info("allocated virtual data address: {:p}", v_data);
+    posix_memalign(&v_data, CACHE_LINE_SIZE, CACHE_LINE_SIZE); /// also try alignas 64 here from c++.
+    logger->trace("allocated virtual data address: {:p}", v_data);
 
     return v_data;
 }
+
+void* allocateChunk(int cache_line_count)
+{
+    void *v_data = nullptr;
+    posix_memalign(&v_data, CACHE_LINE_SIZE, cache_line_count * CACHE_LINE_SIZE); /// also try alignas 64 here from c++.
+    // logger->trace("allocated virtual data address: {:p}", v_data);
+
+    return v_data;
+}
+
+/// I am not using this at the moment, had come across this on web: https://stackoverflow.com/a/28987409/4645121
+uintptr_t virt_to_phys_user2(uintptr_t vaddr) {
+    FILE *pagemap;
+    intptr_t paddr = 0;
+    int offset = (vaddr / sysconf(_SC_PAGESIZE)) * sizeof(uint64_t);
+    uint64_t e;
+
+    // https://www.kernel.org/doc/Documentation/vm/pagemap.txt
+    if ((pagemap = fopen("/proc/self/pagemap", "r"))) {
+        if (lseek(fileno(pagemap), offset, SEEK_SET) == offset) {
+            if (fread(&e, sizeof(uint64_t), 1, pagemap)) {
+                if (e & (1ULL << 63)) { // page present ?
+                    paddr = e & ((1ULL << 54) - 1); // pfn mask
+                    paddr = paddr * sysconf(_SC_PAGESIZE);
+                    // add offset within page
+                    paddr = paddr | (vaddr & (sysconf(_SC_PAGESIZE) - 1));
+                }   
+            }   
+        }   
+        fclose(pagemap);
+    }   
+
+    return paddr;
+} 
 
 /* Convert the given virtual address to physical using /proc/PID/pagemap.
  *
@@ -129,8 +161,7 @@ int pagemap_get_entry(PagemapEntry *entry, int pagemap_fd, uintptr_t vaddr)
     vpn = vaddr / sysconf(_SC_PAGE_SIZE);
     nread = 0;
     while (nread < sizeof(data)) {
-        ret = pread(pagemap_fd, ((uint8_t*)&data) + nread, sizeof(data) - nread,
-                vpn * sizeof(data) + nread);
+        ret = pread(pagemap_fd, ((uint8_t*)&data) + nread, sizeof(data) - nread, vpn * sizeof(data) + nread);
         nread += ret;
         if (ret <= 0) {
             return 1;

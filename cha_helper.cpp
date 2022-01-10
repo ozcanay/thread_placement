@@ -48,8 +48,10 @@ int findCHA(long long* data, int index)
 
     stick_this_thread_to_core(17); /// stick thread to any core. --> made this 17 from 0 so that I dont bind to an isolated core. isolated cores are 0-15 last time I checked. 
 
-    const long long iteration_count = 300'000'000;
-    logger->info("number of iterations for flush step: {} million.", iteration_count / 1'000'000);
+    // const long long iteration_count = 300'000'000; --> this is safe, but time consuming.
+    const long long iteration_count = 30'000'000; // --> seems to be working as well, takes significantly lower time (~5s). 
+
+    logger->debug("number of iterations for flush step: {} million.", iteration_count / 1'000'000);
     auto msr_fds = getMsrFds();
 
     /// one of the counter control values would have sufficed but I do not want to modify setAllUncoreMethods function just for this purpose.
@@ -89,7 +91,7 @@ int findCHA(long long* data, int index)
         }
     }
 
-    logger->info("Modifying data and then flushing immediately several times. This should take long.");
+    logger->debug("Modifying data and then flushing immediately several times. This should take long.");
 
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     for(long long i = 0; i < iteration_count; ++i) {
@@ -100,7 +102,7 @@ int findCHA(long long* data, int index)
     }
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();  
 
-    logger->info("Flush step took {} milliseconds.", std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());      
+    logger->debug("Flush step took {} milliseconds.", std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());      
 
     logger->debug("---------------- SECOND READINGS ----------------");
     for(int socket = 0; socket < NUM_SOCKETS; ++socket) {
@@ -173,8 +175,8 @@ int findCHA(long long* data, int index)
     logger->debug("FILTER0: {}", descriptions[FILTER0]);
     logger->debug("FILTER1: {}", descriptions[FILTER1]);
 
-    logger->info("Weight of the most LLC lookuped CHA amongst all CHAs: {}", data_read_max_percentage);
-    logger->info("assigned cha of address {:p}: {}", static_cast<void*>(&data[index]), assigned_cha);
+    logger->debug("Weight of the most LLC lookuped CHA amongst all CHAs: {}", data_read_max_percentage);
+    logger->debug("assigned cha of address {:p}: {}", static_cast<void*>(&data[index]), assigned_cha);
 
     logger->debug("closing file descriptors of MSRs.");
     for(const auto& p : msr_fds) {
@@ -189,14 +191,17 @@ int findCHA(long long* data, int index)
     return assigned_cha;
 }
 
-/// it is important to get the pointer by reference so that we do not copy it here! --> I AM NOT SURE ABOUT THIS, POINTER STILL POINTS TO THE SAME MEMORY LOCATION.
+/// it is important to get the pointer by reference so that we do not copy it here! Has trouble while working with space allocated by mmap().
 int findCHAByHashing(long long*& val)
 {
+    // logger->info("findCHAByHashing input pointer: {}", (void*)val);
+
     pid_t pid = getpid();
 
     uintptr_t physical_address = 0;
 
     uintptr_t virtual_address = reinterpret_cast<uintptr_t>(&val);
+    // logger->info("virtual_address: 0x{:x}", virtual_address);
 
     if (virt_to_phys_user(&physical_address, pid, virtual_address)) {
         logger->error("error: virt_to_phys_user");
@@ -226,6 +231,8 @@ void runDifferentChaFindMethodsToCompare()
 {
     std::atomic<long long> var{10};
     long long* var_ptr = reinterpret_cast<long long*>(&var);
+
+    logger->info("var_ptr: {}", (void*)var_ptr);
     
     int cha_by_hashing = findCHAByHashing(var_ptr);
 

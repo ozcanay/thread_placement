@@ -17,9 +17,11 @@ std::shared_ptr<spdlog::logger> logger = nullptr;
 #include <unistd.h>
 #include <chrono>
 #include <iostream>
+#include <unordered_map>
 #include <thread>
 #include <mutex>
 #include <fstream>
+#include <vector>
 #include <condition_variable>
 #include <csignal>
 #include <atomic>
@@ -78,7 +80,7 @@ struct ConfigParam
     unsigned int FIL1;
 };
 
-unsigned long long runPingPongMicroBenchmark(long long iteration_count, int main_thread_core_id, int secondary_thread_core_id, const ConfigParam& config_param);
+unsigned long long runPingPongMicroBenchmark(long long iteration_count, int main_thread_core_id, int secondary_thread_core_id, const ConfigParam& config_param, std::unordered_map<int, long long*>& addresses);
 void readTrafficCountersWhileReadingData(int core);
 // void runPingPMABenchmark(long long* data, long long iteration_count, int main_thread_core_id, int secondary_thread_core_id, const ConfigParam& config_param); make sure that topo is correct by using PMA_GV perf counter!
 static inline void incrementLoop(std::atomic<long long>& data, long long iteration_count, int core_id);
@@ -87,23 +89,100 @@ int main(int argc, char** argv)
 {
     ignoreHangupSignal();   
     
-    setLogger("logs/aditya_benchmark.txt", spdlog::level::info);
+    setLogger("logs/refactored_monday.txt", spdlog::level::info);
     assertRoot(); /// assert root must come after setLogger() since it uses logger instance.
     logger->info("================================================ STARTING ================================================");
 
-    return 0;
+    std::set<int> encountered_chas;
+    std::unordered_map<int, long long*> addresses;
 
+    /// this needs better data structure organization: no need for set when I have unordered_map!
+    /// 65536 is quite a large chunk, 64 could do it: a page consists of 64 cache lines in this system.
+    while(encountered_chas.size() < 18) {
+        auto addr = static_cast<long long*>(allocateChunk(65536));
+        logger->info("alloc addr: {}", (void*)addr);
+        // *addr = 15;
+        const int perf_cha = findCHA(addr); /// hashing method did not work here somehow!
+        
+        if(encountered_chas.insert(perf_cha).second) {
+            logger->info("encountered new cha: {}", perf_cha);
+
+            for(auto encountered_cha : encountered_chas) {
+                logger->info("encountered cha: {}", encountered_cha);
+            }
+
+            logger->info("addr: {}", (void*)addr);
+            addresses[perf_cha] = addr;
+        } else {
+            logger->info("discarded cha: {}", perf_cha);
+            // logger->info("freed addr: {}", (void*)addr);
+            // std::free(addr); --> it is important not to free, otherwise in the next iteration os will allocate this freed space again, causing a livelock.
+        }
+    }
+
+    logger->info("All chas encountered!!!!!!!!!!!!!!!!!!!!!!!");
+    // return 0;
+
+    // std::unordered_map<int, std::vector<long long*>> vals;
+
+    // /// example address: 0x7fff66f5ebe8, 48 bits of virtual address in Linux.
+
+    // // 0x30cabdefa612, 0x66cabdefa612, 0x48cabdefa612, 0x96cabdefa612
+    // std::vector<void*> addrs;
+
+
+    // /// these addresses have to be multiple of 4096 (page size of 4KB), because they will be used as a first argument to mmap() which requires address this way.
+    // addrs.push_back((void*)0x30abcdefa000);
+    // addrs.push_back((void*)0x660123456000);
+    // addrs.push_back((void*)0x489876543000);
+    // addrs.push_back((void*)0x7f96eab26000);
+
+    // for(auto& addr : addrs) {
+    // //            EINVAL We don't like addr, length, or offset (e.g., they are too
+    // //           large, or not aligned on a page boundary).
+
+    // //    EINVAL (since Linux 2.6.12) length was 0.
+
+    // //    EINVAL flags contained none of MAP_PRIVATE, MAP_SHARED, or -----> THIS IS IMPORTANT
+    // //           MAP_SHARED_VALIDATE.
+
+    //     logger->info("addr: {}", addr);
+    //     /// since I did not specify MAP_FIXED, exact address is not guaranteed to be given by OS to me.
+    //     long long* mapped_addr = static_cast<long long*>(mmap(addr, sizeof(long long), PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_SHARED, -1, 0));
+
+    //     *mapped_addr = 10; /// just to touch it, just in case.
+
+    //     // std::cout << *mapped_addr << std::endl;
+    //     // return 0;
+
+    //     if(addr == MAP_FAILED) {
+    //         std::cout << "MAPPING FAILED: " << strerror(errno) << std::endl;
+    //         logger->info("MAPPING FAILED");
+    //         continue;    
+    //     }
+
+    //     logger->info("mapped_addr: {}", (void*)mapped_addr);
+
+    //     const int perf_cha = findCHA(mapped_addr);
+    //     logger->info("perf cha: {}", perf_cha);
+
+    //     // const int hash_cha = findCHAByHashing(mapped_addr);  // troublesome while working with space allocated by mmap().
+    //     // logger->info("hash cha: {}", hash_cha);
+    // }
+
+    // logger->info("Summary");
+    // for(const auto& pp : vals) {
+    //     logger->info("{} -> {} items.", pp.first, pp.second.size());
+    // }
     
-    runAdityaBenchmark();
 
-    return 0;
+    // return 0;
 
-    // /// IMC Read Flow
-    // initializeMMConfigPtr(); /// will need this for IMC counters.
-    // configureImcCounters("imc_perfevtsel.input");
-    // readImcCounters();
-    // /// IMC Read Flow
-    
+
+    // runAdityaBenchmark();
+
+    // return 0;
+
 
     const long long ping_pong_iteration_count = 1'000'000'000;
     logger->debug("number of ping pong iterations : {} million.", ping_pong_iteration_count / 1'000'000);
@@ -121,13 +200,13 @@ int main(int argc, char** argv)
 
             {
             ConfigParam config_param{LEFT_BL_READ, RIGHT_BL_READ, UP_BL_READ, DOWN_BL_READ, FILTER0_OFF, FILTER1_OFF};
-            auto duration = runPingPongMicroBenchmark(ping_pong_iteration_count, first_core, second_core, config_param);
+            auto duration = runPingPongMicroBenchmark(ping_pong_iteration_count, first_core, second_core, config_param, addresses);
             }
 
-            // {
-            // ConfigParam config_param{LEFT_BL_READ, RIGHT_BL_READ, UP_BL_READ, DOWN_BL_READ, FILTER0_OFF, FILTER1_OFF};
-            // auto duration = runPingPongMicroBenchmark(ping_pong_iteration_count, first_core, second_core, config_param);
-            // }
+            {
+            ConfigParam config_param{LEFT_AD_READ, RIGHT_AD_READ, UP_AD_READ, DOWN_AD_READ, FILTER0_OFF, FILTER1_OFF};
+            auto duration = runPingPongMicroBenchmark(ping_pong_iteration_count, first_core, second_core, config_param, addresses);
+            }
 
             // {
             // ConfigParam config_param{LEFT_AK_READ, RIGHT_AK_READ, UP_AK_READ, DOWN_AK_READ, FILTER0_OFF, FILTER1_OFF};
@@ -214,194 +293,198 @@ static inline void incrementLoop2(long long& data, long long iteration_count, in
 }
 
 
-unsigned long long runPingPongMicroBenchmark(long long iteration_count, int main_thread_core_id, int secondary_thread_core_id, const ConfigParam& config_param)
+unsigned long long runPingPongMicroBenchmark(long long iteration_count, int main_thread_core_id, int secondary_thread_core_id, const ConfigParam& config_param, std::unordered_map<int, long long*>& addresses)
 {
-    long long var{0};
-    // std::atomic<long long*> var_ptr{nullptr};
-    // var_ptr.store(&var);
+    // long long var{0};
+    // long long* data = reinterpret_cast<long long*>(&var);
+    // int assigned_cha = findCHAByHashing(data);
 
-    long long* data = reinterpret_cast<long long*>(&var);
-    int assigned_cha = findCHAByHashing(data);
-    // logger->info("Cache line transfer microbenchmark started.");
-    // logger->info(">>>>>>>>>>>>>>>>>>>>>");
 
-    std::vector<unsigned int> vals = {config_param.CTR0, config_param.CTR1, config_param.CTR2, config_param.CTR3, config_param.FIL0, config_param.FIL1};
-    setAllUncoreRegisters(vals);
-    vals = {config_param.CTR0, config_param.CTR1, config_param.CTR2, config_param.CTR3};
+    for(auto& pp : addresses) {
+        int assigned_cha = pp.first;
+        long long* data = pp.second;
+        long long var = *data;
 
-    std::map<int, std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> read_vals;
+        std::vector<unsigned int> vals = {config_param.CTR0, config_param.CTR1, config_param.CTR2, config_param.CTR3, config_param.FIL0, config_param.FIL1};
+        setAllUncoreRegisters(vals);
+        vals = {config_param.CTR0, config_param.CTR1, config_param.CTR2, config_param.CTR3};
 
-    auto msr_fds = getMsrFds();
+        std::map<int, std::pair<std::vector<uint64_t>, std::vector<uint64_t>>> read_vals;
 
-    stick_this_thread_to_core(main_thread_core_id); /// actually we did this at startup, just to make sure, do it again!
+        auto msr_fds = getMsrFds();
 
-    logger->debug("---------------- FIRST READINGS ----------------");
-    for(int socket = 0; socket < NUM_SOCKETS; ++socket) {
-        long core = 0;
+        stick_this_thread_to_core(main_thread_core_id); /// actually we did this at startup, just to make sure, do it again!
 
-        for(int cha = 0; cha < NUM_CHA_BOXES; ++cha) {
-            for(int i = 0; i < vals.size(); ++i) {
-                uint64_t msr_val;
-                uint64_t msr_num = CHA_MSR_PMON_CTR_BASE + (CHA_BASE * cha) + i;
-                logger->debug("Executing pread() --> fd: {}, offset: {:x}", msr_fds[core], msr_num);
-                ssize_t rc64 = pread(msr_fds[core], &msr_val, sizeof(msr_val), msr_num);
-                if (rc64 != sizeof(msr_val)) {
-                    logger->error("EXIT FAILURE. rc64: {}", rc64);
-                    logger->error("error: {}", strerror(errno));
-                    exit(EXIT_FAILURE);
-                } else {
-                    read_vals[cha].first.push_back(msr_val);
-                    logger->debug("Read {} from socket {}, CHA {} on core {}, offset 0x{:x}.", msr_val, socket, cha, core, msr_num);
+        logger->debug("---------------- FIRST READINGS ----------------");
+        for(int socket = 0; socket < NUM_SOCKETS; ++socket) {
+            long core = 0;
+
+            for(int cha = 0; cha < NUM_CHA_BOXES; ++cha) {
+                for(int i = 0; i < vals.size(); ++i) {
+                    uint64_t msr_val;
+                    uint64_t msr_num = CHA_MSR_PMON_CTR_BASE + (CHA_BASE * cha) + i;
+                    logger->debug("Executing pread() --> fd: {}, offset: {:x}", msr_fds[core], msr_num);
+                    ssize_t rc64 = pread(msr_fds[core], &msr_val, sizeof(msr_val), msr_num);
+                    if (rc64 != sizeof(msr_val)) {
+                        logger->error("EXIT FAILURE. rc64: {}", rc64);
+                        logger->error("error: {}", strerror(errno));
+                        exit(EXIT_FAILURE);
+                    } else {
+                        read_vals[cha].first.push_back(msr_val);
+                        logger->debug("Read {} from socket {}, CHA {} on core {}, offset 0x{:x}.", msr_val, socket, cha, core, msr_num);
+                    }
                 }
             }
         }
+
+        logger->info("COUNTER_CONTROL0: {}", descriptions[config_param.CTR0]);
+        logger->info("COUNTER_CONTROL1: {}", descriptions[config_param.CTR1]);
+        logger->info("COUNTER_CONTROL2: {}", descriptions[config_param.CTR2]);
+        logger->info("COUNTER_CONTROL3: {}", descriptions[config_param.CTR3]);
+        logger->info("FILTER0: {}", descriptions[config_param.FIL0]);
+        logger->info("FILTER1: {}", descriptions[config_param.FIL1]);
+        logger->info("core: {}, core: {}", main_thread_core_id, secondary_thread_core_id);
+        logger->info("assigned cha: {}", assigned_cha);
+
+        std::thread other_thread(incrementLoop2, std::ref(var), iteration_count, secondary_thread_core_id);
+        while(!thread_started)
+        ;
+
+        // logger->info("---");
+        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+        incrementLoop2(var, iteration_count, main_thread_core_id);
+        other_thread.join();
+        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+        unsigned long long elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+
+        // logger->info("PingPong duration in seconds: ~{}.", std::chrono::duration_cast<std::chrono::seconds>(end - begin).count());
+        if(var == 2 * iteration_count) {
+            logger->info("Threadsafe increment!");
+        } else {
+            logger->error("Variable has not expected value!");
+        }
+
+        logger->info("PingPongDuration: {} ms, core: {}, core: {}, cha: {}, iteration_count: {}, variable: {}", elapsed_time, main_thread_core_id, secondary_thread_core_id, assigned_cha, iteration_count, var);
+        logger->info("---");
+        
+        logger->debug("---------------- SECOND READINGS ----------------");
+        for(int socket = 0; socket < NUM_SOCKETS; ++socket) {
+            long core = 0;
+
+            for(int cha = 0; cha < NUM_CHA_BOXES; ++cha) {
+                for(int i = 0; i < vals.size(); ++i) {
+                    uint64_t msr_val;
+                    uint64_t msr_num = CHA_MSR_PMON_CTR_BASE + (CHA_BASE * cha) + i;
+                    logger->debug("Executing pread() --> fd: {}, offset: {:x}", msr_fds[core], msr_num);
+                    ssize_t rc64 = pread(msr_fds[core], &msr_val, sizeof(msr_val), msr_num);
+                    if (rc64 != sizeof(msr_val)) {
+                        logger->error("EXIT FAILURE. rc64: {}", rc64);
+                        logger->error("error: {}", strerror(errno));
+                        exit(EXIT_FAILURE);
+                    } else {
+                        read_vals[cha].second.push_back(msr_val);
+                        logger->debug("Read {} from socket {}, CHA {} on core {}, offset 0x{:x}.", msr_val, socket, cha, core, msr_num);
+                    }
+                }
+            }
+        }
+
+        logger->debug("---------------- ANALYZING ----------------");
+        long long sum_diff0 = 0;
+        long long sum_diff1 = 0;
+        long long sum_diff2 = 0;
+        long long sum_diff3 = 0;
+
+        for(const auto& read_val : read_vals) {
+            logger->debug("map entry -> {} : <{} {} {} {}, {} {} {} {}>", read_val.first, 
+            read_val.second.first[0], read_val.second.first[1], read_val.second.first[2], read_val.second.first[3], 
+            read_val.second.second[0], read_val.second.second[1], read_val.second.second[2], read_val.second.second[3]);
+
+            logger->debug("CHA: {}, read diff: <{} {} {} {}>", read_val.first, 
+                                                        read_val.second.second[0] - read_val.second.first[0],
+                                                        read_val.second.second[1] - read_val.second.first[1],
+                                                        read_val.second.second[2] - read_val.second.first[2],
+                                                        read_val.second.second[3] - read_val.second.first[3]);
+
+            sum_diff0 += (read_val.second.second[0] - read_val.second.first[0]);
+            sum_diff1 += (read_val.second.second[1] - read_val.second.first[1]);
+            sum_diff2 += (read_val.second.second[2] - read_val.second.first[2]);
+            sum_diff3 += (read_val.second.second[3] - read_val.second.first[3]);
+        }
+
+        logger->debug("Summarizing in terms of percentage:");
+        /// val-cha pairs.
+        std::set<std::pair<double, int>, std::greater<>> val0s;
+        std::set<std::pair<double, int>, std::greater<>> val1s;
+        std::set<std::pair<double, int>, std::greater<>> val2s;
+        std::set<std::pair<double, int>, std::greater<>> val3s;
+        // std::set<std::pair<double, int>, std::greater<>> horizontal_vals;
+        // std::set<std::pair<double, int>, std::greater<>> vertical_vals;
+        // std::set<std::pair<double, int>, std::greater<>> total_vals;
+
+        for(const auto& read_val : read_vals) {
+            auto cha   = read_val.first;
+            auto var0 = ((read_val.second.second[0] - read_val.second.first[0]) / (double)sum_diff0) * 100;
+            auto var1 = ((read_val.second.second[1] - read_val.second.first[1]) / (double)sum_diff1) * 100;
+            auto var2 = ((read_val.second.second[2] - read_val.second.first[2]) / (double)sum_diff2) * 100;
+            auto var3 = ((read_val.second.second[3] - read_val.second.first[3]) / (double)sum_diff3) * 100;
+
+            logger->debug("CHA {} --> CTR0 weight: {}, CTR1 weight: {}, CTR2 weight: {}, CTR3 weight: {}", cha, var0, var1, var2, var3);
+
+            val0s.insert({var0, cha});
+            val1s.insert({var1, cha});
+            val2s.insert({var2, cha});
+            val3s.insert({var3, cha});
+
+            // horizontal_vals.insert({left + right, cha});
+            // vertical_vals.insert({up + down, cha});
+            // total_vals.insert({left + right + up + down, cha});
+        }
+
+        logger->info("---\nAnalyzing {}, cores: {}, {}; cha: {}:", descriptions[config_param.CTR0], main_thread_core_id, secondary_thread_core_id, assigned_cha);
+        for(const auto val0 : val0s) {
+            logger->info("cha: {}, percentage: {}", val0.second, val0.first);
+        }
+        logger->info("---\nAnalyzing {}, cores: {}, {}; cha: {}:", descriptions[config_param.CTR1], main_thread_core_id, secondary_thread_core_id, assigned_cha);
+        for(const auto val1 : val1s) {
+            logger->info("cha: {}, percentage: {}", val1.second, val1.first);
+        }
+        logger->info("---\nAnalyzing {}, cores: {}, {}; cha: {}:", descriptions[config_param.CTR2], main_thread_core_id, secondary_thread_core_id, assigned_cha);
+        for(const auto val2 : val2s) {
+            logger->info("cha: {}, percentage: {}", val2.second, val2.first);
+        }
+        logger->info("---\nAnalyzing {}, cores: {}, {}; cha: {}:", descriptions[config_param.CTR3], main_thread_core_id, secondary_thread_core_id, assigned_cha);
+        for(const auto val3 : val3s) {
+            logger->info("cha: {}, percentage: {}", val3.second, val3.first);
+        }
+        // logger->info("---\nAnalyzing vertical traffic:");
+        // for(const auto vertical_val : vertical_vals) {
+        //     logger->info("cha: {}, percentage: {}", vertical_val.second, vertical_val.first);
+        // }
+        // logger->info("---\nAnalyzing horizontal traffic:");
+        // for(const auto horizontal_val : horizontal_vals) {
+        //     logger->info("cha: {}, percentage: {}", horizontal_val.second, horizontal_val.first);
+        // }
+        // logger->info("---\nAnalyzing total traffic:");
+        // for(const auto total_val : total_vals) {
+        //     logger->info("cha: {}, percentage: {}", total_val.second, total_val.first);
+        // }
+
+        logger->debug("closing file descriptors of MSRs.");
+        for(const auto& p : msr_fds) {
+            int cpu = p.first;
+            int to_be_closed = p.second;
+            logger->debug("closing fd {} of cpu {}.", to_be_closed, cpu);
+            ::close(to_be_closed);
+        }
+
+        // logger->info("Cache line transfer microbenchmark ended.");
+        // logger->info("<<<<<<<<<<<<<<<<<<<<<");
+
+        // return elapsed_time;
     }
-
-    logger->info("COUNTER_CONTROL0: {}", descriptions[config_param.CTR0]);
-    logger->info("COUNTER_CONTROL1: {}", descriptions[config_param.CTR1]);
-    logger->info("COUNTER_CONTROL2: {}", descriptions[config_param.CTR2]);
-    logger->info("COUNTER_CONTROL3: {}", descriptions[config_param.CTR3]);
-    logger->info("FILTER0: {}", descriptions[config_param.FIL0]);
-    logger->info("FILTER1: {}", descriptions[config_param.FIL1]);
-    logger->info("core: {}, core: {}", main_thread_core_id, secondary_thread_core_id);
-    logger->info("assigned cha: {}", assigned_cha);
-
-    std::thread other_thread(incrementLoop2, std::ref(var), iteration_count, secondary_thread_core_id);
-    while(!thread_started)
-    ;
-
-    // logger->info("---");
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    incrementLoop2(var, iteration_count, main_thread_core_id);
-    other_thread.join();
-    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    unsigned long long elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-
-    // logger->info("PingPong duration in seconds: ~{}.", std::chrono::duration_cast<std::chrono::seconds>(end - begin).count());
-    if(var == 2 * iteration_count) {
-        logger->info("Threadsafe increment!");
-    } else {
-        logger->error("Variable has not expected value!");
-    }
-
-    logger->info("PingPongDuration: {} ms, core: {}, core: {}, cha: {}, iteration_count: {}, variable: {}", elapsed_time, main_thread_core_id, secondary_thread_core_id, assigned_cha, iteration_count, var);
-    logger->info("---");
     
-    logger->debug("---------------- SECOND READINGS ----------------");
-    for(int socket = 0; socket < NUM_SOCKETS; ++socket) {
-        long core = 0;
-
-        for(int cha = 0; cha < NUM_CHA_BOXES; ++cha) {
-            for(int i = 0; i < vals.size(); ++i) {
-                uint64_t msr_val;
-                uint64_t msr_num = CHA_MSR_PMON_CTR_BASE + (CHA_BASE * cha) + i;
-                logger->debug("Executing pread() --> fd: {}, offset: {:x}", msr_fds[core], msr_num);
-                ssize_t rc64 = pread(msr_fds[core], &msr_val, sizeof(msr_val), msr_num);
-                if (rc64 != sizeof(msr_val)) {
-                    logger->error("EXIT FAILURE. rc64: {}", rc64);
-                    logger->error("error: {}", strerror(errno));
-                    exit(EXIT_FAILURE);
-                } else {
-                    read_vals[cha].second.push_back(msr_val);
-                    logger->debug("Read {} from socket {}, CHA {} on core {}, offset 0x{:x}.", msr_val, socket, cha, core, msr_num);
-                }
-            }
-        }
-    }
-
-    logger->debug("---------------- ANALYZING ----------------");
-    long long sum_diff0 = 0;
-    long long sum_diff1 = 0;
-    long long sum_diff2 = 0;
-    long long sum_diff3 = 0;
-
-    for(const auto& read_val : read_vals) {
-        logger->debug("map entry -> {} : <{} {} {} {}, {} {} {} {}>", read_val.first, 
-        read_val.second.first[0], read_val.second.first[1], read_val.second.first[2], read_val.second.first[3], 
-        read_val.second.second[0], read_val.second.second[1], read_val.second.second[2], read_val.second.second[3]);
-
-        logger->debug("CHA: {}, read diff: <{} {} {} {}>", read_val.first, 
-                                                    read_val.second.second[0] - read_val.second.first[0],
-                                                    read_val.second.second[1] - read_val.second.first[1],
-                                                    read_val.second.second[2] - read_val.second.first[2],
-                                                    read_val.second.second[3] - read_val.second.first[3]);
-
-        sum_diff0 += (read_val.second.second[0] - read_val.second.first[0]);
-        sum_diff1 += (read_val.second.second[1] - read_val.second.first[1]);
-        sum_diff2 += (read_val.second.second[2] - read_val.second.first[2]);
-        sum_diff3 += (read_val.second.second[3] - read_val.second.first[3]);
-    }
-
-    logger->debug("Summarizing in terms of percentage:");
-    /// val-cha pairs.
-    std::set<std::pair<double, int>, std::greater<>> val0s;
-    std::set<std::pair<double, int>, std::greater<>> val1s;
-    std::set<std::pair<double, int>, std::greater<>> val2s;
-    std::set<std::pair<double, int>, std::greater<>> val3s;
-    // std::set<std::pair<double, int>, std::greater<>> horizontal_vals;
-    // std::set<std::pair<double, int>, std::greater<>> vertical_vals;
-    // std::set<std::pair<double, int>, std::greater<>> total_vals;
-
-    for(const auto& read_val : read_vals) {
-        auto cha   = read_val.first;
-        auto var0 = ((read_val.second.second[0] - read_val.second.first[0]) / (double)sum_diff0) * 100;
-        auto var1 = ((read_val.second.second[1] - read_val.second.first[1]) / (double)sum_diff1) * 100;
-        auto var2 = ((read_val.second.second[2] - read_val.second.first[2]) / (double)sum_diff2) * 100;
-        auto var3 = ((read_val.second.second[3] - read_val.second.first[3]) / (double)sum_diff3) * 100;
-
-        logger->debug("CHA {} --> CTR0 weight: {}, CTR1 weight: {}, CTR2 weight: {}, CTR3 weight: {}", cha, var0, var1, var2, var3);
-
-        val0s.insert({var0, cha});
-        val1s.insert({var1, cha});
-        val2s.insert({var2, cha});
-        val3s.insert({var3, cha});
-
-        // horizontal_vals.insert({left + right, cha});
-        // vertical_vals.insert({up + down, cha});
-        // total_vals.insert({left + right + up + down, cha});
-    }
-
-    logger->info("---\nAnalyzing {}, cores: {}, {}; cha: {}:", descriptions[config_param.CTR0], main_thread_core_id, secondary_thread_core_id, assigned_cha);
-    for(const auto val0 : val0s) {
-        logger->info("cha: {}, percentage: {}", val0.second, val0.first);
-    }
-    logger->info("---\nAnalyzing {}, cores: {}, {}; cha: {}:", descriptions[config_param.CTR1], main_thread_core_id, secondary_thread_core_id, assigned_cha);
-    for(const auto val1 : val1s) {
-        logger->info("cha: {}, percentage: {}", val1.second, val1.first);
-    }
-    logger->info("---\nAnalyzing {}, cores: {}, {}; cha: {}:", descriptions[config_param.CTR2], main_thread_core_id, secondary_thread_core_id, assigned_cha);
-    for(const auto val2 : val2s) {
-        logger->info("cha: {}, percentage: {}", val2.second, val2.first);
-    }
-    logger->info("---\nAnalyzing {}, cores: {}, {}; cha: {}:", descriptions[config_param.CTR3], main_thread_core_id, secondary_thread_core_id, assigned_cha);
-    for(const auto val3 : val3s) {
-        logger->info("cha: {}, percentage: {}", val3.second, val3.first);
-    }
-    // logger->info("---\nAnalyzing vertical traffic:");
-    // for(const auto vertical_val : vertical_vals) {
-    //     logger->info("cha: {}, percentage: {}", vertical_val.second, vertical_val.first);
-    // }
-    // logger->info("---\nAnalyzing horizontal traffic:");
-    // for(const auto horizontal_val : horizontal_vals) {
-    //     logger->info("cha: {}, percentage: {}", horizontal_val.second, horizontal_val.first);
-    // }
-    // logger->info("---\nAnalyzing total traffic:");
-    // for(const auto total_val : total_vals) {
-    //     logger->info("cha: {}, percentage: {}", total_val.second, total_val.first);
-    // }
-
-    logger->debug("closing file descriptors of MSRs.");
-    for(const auto& p : msr_fds) {
-        int cpu = p.first;
-        int to_be_closed = p.second;
-        logger->debug("closing fd {} of cpu {}.", to_be_closed, cpu);
-        ::close(to_be_closed);
-    }
-
-    // logger->info("Cache line transfer microbenchmark ended.");
-	// logger->info("<<<<<<<<<<<<<<<<<<<<<");
-
-    return elapsed_time;
+    return 0;
 }
 
 void readTrafficCountersWhileReadingData(int core)

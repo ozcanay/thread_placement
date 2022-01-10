@@ -81,6 +81,10 @@ void configureImcCounters(const std::string& config_file)
 
 void runImcBenchmark(bool flush)
 {
+
+    initializeMMConfigPtr(); /// will need this for IMC counters.
+    configureImcCounters("imc_perfevtsel.input");
+
     long long g_x = 0;
     
     long long iteration = 100'000'000;

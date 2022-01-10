@@ -21,7 +21,7 @@ void setLogger(const std::string& log_name, spdlog::level::level_enum level)
         console_sink->set_level(level);
         console_sink->set_pattern("[multi_sink_example] [%^%l%$] %v");
 
-        auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_name, false);
+        auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_name, true);
         file_sink->set_level(level);
 
         // auto syslog_logger = std::make_sharedspdlog::syslog_logger_mt("syslog", "pcap-parser", LOG_CONS | LOG_NDELAY, LOG_LOCAL2);
